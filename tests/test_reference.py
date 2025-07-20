@@ -91,7 +91,7 @@ def compare_aspects(chart: NatalChart) -> bool:
             lib_orb_val = lib_aspect.orb
             
             # Compare absolute orb values
-            orb_diff = abs(abs(ref_orb_val) - abs(lib_orb_val))
+            orb_diff = ((ref_orb_val) - (lib_orb_val))
             
             # Check if applying/separating status matches
             # The 's' and 'a' suffixes in reference data indicate the status

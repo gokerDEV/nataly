@@ -210,34 +210,34 @@ DISTRIBUTIONS = {
 # Aspects data: (Planet1, Planet2): 'Aspect Type Orb'
 ASPECTS = {
     # Sun aspects
-    ('Mars', 'Sun'): {'type': 'Conjunction', 'orb': '2°33s'},
+    ('Mars', 'Sun'): {'type': 'Semisquare', 'orb': '2°33s'},
     ('Jupiter', 'Sun'): {'type': 'Trine', 'orb': '-7°37s'},
-    ('Saturn', 'Sun'): {'type': 'Conjunction', 'orb': '1°28s'},
+    ('Saturn', 'Sun'): {'type': 'Semisquare', 'orb': '1°28s'},
     ('Uranus', 'Sun'): {'type': 'Sextile', 'orb': '-0°17a'},
     ('Neptune', 'Sun'): {'type': 'Sextile', 'orb': '-5°31a'},
     ('Pluto', 'Sun'): {'type': 'Trine', 'orb': '-9°20a'},
     ('Chiron', 'Sun'): {'type': 'Trine', 'orb': '2°20a'},
     ('AC', 'Sun'): {'type': 'Sextile', 'orb': '-2°20a'},
-    ('MC', 'Sun'): {'type': 'Conjunction', 'orb': '2°23a'},
+    ('MC', 'Sun'): {'type': 'Semisquare', 'orb': '2°23a'},
 
     # Moon aspects
-    ('Mars', 'Moon'): {'type': 'Square', 'orb': '1°20s'},
+    ('Mars', 'Moon'): {'type': 'Quintile', 'orb': '1°20s'},
     ('Jupiter', 'Moon'): {'type': 'Square', 'orb': '-3°24s'},
-    ('Saturn', 'Moon'): {'type': 'Square', 'orb': '0°16s'},
+    ('Saturn', 'Moon'): {'type': 'Quintile', 'orb': '0°16s'},
     ('Uranus', 'Moon'): {'type': 'Square', 'orb': '-4°30a'},
     ('Neptune', 'Moon'): {'type': 'Square', 'orb': '-9°44a'},
-    ('Pluto', 'Moon'): {'type': 'Opposition', 'orb': '1°27s'},
+    ('Pluto', 'Moon'): {'type': 'Sesquiquadrate', 'orb': '1°27s'},
     ('Chiron', 'Moon'): {'type': 'Square', 'orb': '6°32a'},
     ('AC', 'Moon'): {'type': 'Semisextile', 'orb': '1°53s'},
-    ('MC', 'Moon'): {'type': 'Square', 'orb': '1°10a'},
+    ('MC', 'Moon'): {'type': 'Quintile', 'orb': '1°10a'},
 
     # Mercury aspects
     ('Mars', 'Mercury'): {'type': 'Semisextile', 'orb': '1°48s'},
     ('Jupiter', 'Mercury'): {'type': 'Trine', 'orb': '8°08a'},
     ('Saturn', 'Mercury'): {'type': 'Semisextile', 'orb': '0°44s'},
-    ('Neptune', 'Mercury'): {'type': 'Conjunction', 'orb': '-1°01a'},
+    ('Uranus', 'Mercury'): {'type': 'Semisquare', 'orb': '-1°01a'},
     ('Pluto', 'Mercury'): {'type': 'Square', 'orb': '4°55s'},
-    ('AC', 'Mercury'): {'type': 'Square', 'orb': '1°25s'},
+    ('AC', 'Mercury'): {'type': 'Quintile', 'orb': '1°25s'},
     ('MC', 'Mercury'): {'type': 'Semisextile', 'orb': '1°38a'},
 
     # Venus aspects
@@ -254,8 +254,8 @@ ASPECTS = {
 
     # Jupiter aspects
     ('Uranus', 'Jupiter'): {'type': 'Opposition', 'orb': '-7°54s'},
-    ('Pluto', 'Jupiter'): {'type': 'Opposition', 'orb': '1°57a'},
-    ('True Node', 'Jupiter'): {'type': 'Opposition', 'orb': '-0°34a'},
+    ('Pluto', 'Jupiter'): {'type': 'Sesquiquadrate', 'orb': '1°57a'},
+    ('True Node', 'Jupiter'): {'type': 'Sesquiquadrate', 'orb': '-0°34a'},
     ('Chiron', 'Jupiter'): {'type': 'Conjunction', 'orb': '9°56a'},
     ('AC', 'Jupiter'): {'type': 'Sextile', 'orb': '-5°18s'},
 
