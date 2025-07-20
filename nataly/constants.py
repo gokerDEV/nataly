@@ -6,7 +6,7 @@ import swisseph as swe
 from typing import Literal
 
 # --- TYPE DEFINITIONS ---
-BodyType = Literal["Planet", "Asteroid", "Axis", "LunarNode", "Lilith", "Luminary"]
+BODY_TYPES = Literal["Planet", "Asteroid", "Axis", "LunarNode", "Lilith", "Luminary"]
 
 # --- ZODIAC SIGNS ---
 SIGNS = {
@@ -51,7 +51,7 @@ ASTEROIDS_SYMBOLS = {
     "Juno": "⚵",         # U+26B5 - Juno (3)
     "Vesta": "⚶",        # U+26B6 - Vesta (4)
     "Chiron": "⚷",       # U+26B7 - Chiron (2060)
-    "Eris": "⯰",         # U+2BF0 - Eris (136199)
+
 }
 
 # LUNAR NODES - Moon's orbital nodes
@@ -210,20 +210,40 @@ PLANET_MAPPING_SWE = {
     "Pluto": swe.PLUTO,          # SE_PLUTO = 9
     
     # Asteroids
-    "Ceres": swe.CERES,          # SE_CERES = 10
-    "Pallas": swe.PALLAS,        # SE_PALLAS = 11
-    "Juno": swe.JUNO,            # SE_JUNO = 12
-    "Vesta": swe.VESTA,          # SE_VESTA = 13
-    "Chiron": swe.CHIRON,        # SE_CHIRON = 15
-    "Eris": swe.ERIS,            # SE_ERIS = 16
+    "Ceres": 17, # swe.CERES
+    "Pallas": 18, # swe.PALLAS
+    "Juno": 19, # swe.JUNO
+    "Vesta": 20, # swe.VESTA
+    "Chiron": 15, # swe.CHIRON
+    # "Ceres": swe.CERES,          # SE_CERES = 10
+    # "Pallas": swe.PALLAS,        # SE_PALLAS = 11
+    # "Juno": swe.JUNO,            # SE_JUNO = 12
+    # "Vesta": swe.VESTA,          # SE_VESTA = 13
+    # "Chiron": swe.CHIRON,        # SE_CHIRON = 15
+    "Pholus": swe.PHOLUS,        # SE_PHOLUS = 16
+    
     
     # Lunar Nodes
-    "True Node": swe.MEAN_NODE,  # SE_MEAN_NODE = 10 (True Node)
+    "True Node": swe.TRUE_NODE,  # SE_TRUE_NODE = 11 (True Node)
     "Mean Node": swe.MEAN_NODE,  # SE_MEAN_NODE = 10
     
-    # Lilith
-    "Lilith": swe.MEAN_NODE,     # SE_MEAN_NODE = 10 (Black Moon Lilith)
-    "Black Moon": swe.MEAN_NODE, # SE_MEAN_NODE = 10
+    # Note: Eris is not available in standard Swiss Ephemeris
+    # Note: South Node is calculated as True Node + 180°
+    # Note: Lilith/Black Moon are calculated separately (not in Swiss Ephemeris)
+    # Note: Angles (AC, MC, IC, DC) are calculated separately
+    
+    # Angles (calculated separately, not from Swiss Ephemeris)
+    "AC": swe.ASC,               # Ascendant
+    "MC": swe.MC,                # Midheaven
+    "IC": None,                  # Imum Coeli (calculated as MC + 180°)
+    "DC": None,                  # Descendant (calculated as AC + 180°)
+    
+    # Additional bodies available in Swiss Ephemeris (optional)
+    "Earth": swe.EARTH,          # SE_EARTH = 14
+    "Mean Apogee": swe.MEAN_APOG, # SE_MEAN_APOG = 12
+    "Osculating Apogee": swe.OSCU_APOG, # SE_OSCU_APOG = 13
+    "Interpolated Apogee": swe.INTP_APOG, # SE_INTP_APOG = 21
+    "Interpolated Perigee": swe.INTP_PERG, # SE_INTP_PERG = 22
 }
 
 # --- ORB CONFIGURATIONS ---
@@ -282,3 +302,19 @@ def set_default_orb_config(config: OrbConfig):
 
 # Initialize default orb config
 DEFAULT_ORB_CONFIG = create_orb_config('Placidus') 
+
+# # ZODIAC SIGN DEGREE OFFSETS
+# ZODIAC_SIGN_DEGREES = {
+#     "Aries": 0,
+#     "Taurus": 30,
+#     "Gemini": 60,
+#     "Cancer": 90,
+#     "Leo": 120,
+#     "Virgo": 150,
+#     "Libra": 180,
+#     "Scorpio": 210,
+#     "Sagittarius": 240,
+#     "Capricorn": 270,
+#     "Aquarius": 300,
+#     "Pisces": 330,
+# } 

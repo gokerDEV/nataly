@@ -4,6 +4,96 @@
 from dataclasses import dataclass
 from typing import Optional, Literal, List, Dict, Any
 
+# ZODIAC_SIGN_DEGREES is moved here to break the circular import with constants.py
+ZODIAC_SIGN_DEGREES = {
+    "Aries": 0, "Taurus": 30, "Gemini": 60, "Cancer": 90, "Leo": 120, "Virgo": 150,
+    "Libra": 180, "Scorpio": 210, "Sagittarius": 240, "Capricorn": 270, "Aquarius": 300, "Pisces": 330,
+}
+
+# --- Astrological Data Conversion Utilities ---
+
+def parse_dms_to_decimal(dms_str: str) -> float:
+    """
+    Parses a Degrees-Minutes-Seconds string into decimal degrees.
+    This function is designed to be robust and handle various DMS formats
+    like "8°26'3\"", "27°8'57\"", or even just "35'46\"".
+
+    Args:
+        dms_str: The string representation of the degrees, minutes, and seconds.
+
+    Returns:
+        The value in decimal degrees as a float.
+    """
+    if not isinstance(dms_str, str):
+        return 0.0
+        
+    dms_str = dms_str.strip()
+    deg, mnt, sec = 0.0, 0.0, 0.0
+
+    # Handles various DMS formats by replacing symbols and splitting.
+    dms_str = dms_str.replace('°', 'd ').replace("'", "m ").replace('"', 's')
+    parts = dms_str.split()
+
+    for part in parts:
+        try:
+            if part.endswith('d'):
+                deg = float(part[:-1])
+            elif part.endswith('m'):
+                mnt = float(part[:-1])
+            elif part.endswith('s'):
+                sec = float(part[:-1])
+        except (ValueError, TypeError):
+            continue # Skip parts that are not valid numbers
+
+    return deg + mnt / 60.0 + sec / 3600.0
+
+def parse_longitude_to_decimal(longitude_str: str, sign_name: Optional[str] = None) -> float:
+    """
+    Parses a longitude string (DMS) and an optional sign into absolute decimal degrees (0-360).
+    This function combines DMS parsing with Zodiac sign offset calculation.
+
+    Args:
+        longitude_str: The DMS string (e.g., "8°26'3\"").
+        sign_name: The name of the zodiac sign (e.g., "Pisces"). If provided, the result
+                   will be the absolute longitude.
+
+    Returns:
+        The absolute longitude in decimal degrees.
+    """
+    decimal_in_sign = parse_dms_to_decimal(longitude_str)
+    
+    if sign_name and sign_name in ZODIAC_SIGN_DEGREES:
+        sign_offset = ZODIAC_SIGN_DEGREES[sign_name]
+        return (sign_offset + decimal_in_sign) % 360
+    else:
+        # If no sign is provided, return the decimal value as is.
+        return decimal_in_sign
+
+def decimal_to_dms_string(decimal: float, format_type: str = 'position') -> str:
+    """
+    Converts decimal degrees to a formatted DMS string (e.g., "8°26'03\"").
+    
+    Args:
+        decimal: The decimal degree value.
+        format_type: 'position' for zodiac longitude (uses modulo 30), 
+                     'speed' or 'orb' for absolute values.
+
+    Returns:
+        A formatted DMS string.
+    """
+    if format_type == 'position':
+        decimal = decimal % 30  # Position within a 30-degree sign
+    
+    decimal = abs(decimal)
+    
+    degrees = int(decimal)
+    minutes_decimal = (decimal - degrees) * 60
+    minutes = int(minutes_decimal)
+    seconds = int((minutes_decimal - minutes) * 60)
+    
+    return f"{degrees}°{minutes:02d}'{seconds:02d}\""
+
+
 @dataclass
 class Sign:
     """Represents the static properties of a Zodiac sign."""
@@ -12,12 +102,12 @@ class Sign:
     element: str
     modality: str
     polarity: str
-    classic_ruler: str  # Traditional ruling planet name
-    modern_ruler: Optional[str] = None  # Modern ruling planet name
+    classic_ruler: str
+    modern_ruler: Optional[str] = None
 
 @dataclass
 class Body:
-    """Represents all calculated properties of a celestial body (planet, asteroid, axis, etc.)."""
+    """Represents all calculated properties of a celestial body."""
     name: str
     body_type: Literal["Planet", "Asteroid", "Axis", "LunarNode", "Lilith", "Luminary"]
     longitude: float
@@ -25,123 +115,68 @@ class Body:
     is_retrograde: bool
     sign: Sign
     house: int
-    dignity: str = "" # e.g., "domicile", "detriment"
+    dignity: str = ""
 
     @property
     def dms(self) -> str:
-        """Returns the longitude in Degrees°Minutes' format within its sign."""
-        deg_in_sign = self.longitude % 30
-        deg = int(deg_in_sign)
-        minute = int((deg_in_sign - deg) * 60)
-        return f"{deg:02d}°{minute:02d}'"
+        """Returns the longitude in Degrees°Minutes'Seconds" format within its sign."""
+        return decimal_to_dms_string(self.longitude, 'position')
 
     @property
     def signed_dms(self) -> str:
-        """Returns the longitude in DD°Sign'MM' format."""
-        return f"{self.dms} {self.sign.symbol}"
-
-# Type aliases for better readability
-Planet = Body
-Asteroid = Body
-Axis = Body
-LunarNode = Body
-Lilith = Body
-Luminary = Body
+        """Returns the longitude in DD°Sign'MM'SS" format."""
+        # This implementation is now more robust.
+        # It calculates the values directly instead of parsing the output of another property.
+        decimal_in_sign = self.longitude % 30
+        degrees = int(decimal_in_sign)
+        minutes_decimal = (decimal_in_sign - degrees) * 60
+        minutes = int(minutes_decimal)
+        seconds = int((minutes_decimal - minutes) * 60)
+        return f"{degrees}{self.sign.symbol}{minutes:02d}'{seconds:02d}\""
 
 @dataclass
 class BodyFilter:
     """Filter configuration for celestial bodies."""
-    # Body type filters
     include_planets: bool = True
     include_luminaries: bool = True
     include_asteroids: bool = True
     include_axes: bool = True
     include_lunar_nodes: bool = True
     include_lilith: bool = True
-    
-    # Specific body filters
-    include_bodies: Optional[List[str]] = None  # Specific body names to include
-    exclude_bodies: Optional[List[str]] = None  # Specific body names to exclude
-    
-    # Sign filters
-    include_signs: Optional[List[str]] = None  # Specific signs to include
-    exclude_signs: Optional[List[str]] = None  # Specific signs to exclude
-    
-    # Element filters
-    include_elements: Optional[List[str]] = None  # Specific elements to include
-    exclude_elements: Optional[List[str]] = None  # Specific elements to exclude
-    
-    # Modality filters
-    include_modalities: Optional[List[str]] = None  # Specific modalities to include
-    exclude_modalities: Optional[List[str]] = None  # Specific modalities to exclude
-    
-    # House filters
-    include_houses: Optional[List[int]] = None  # Specific houses to include
-    exclude_houses: Optional[List[int]] = None  # Specific houses to exclude
-    
-    # Dignity filters
-    include_dignities: Optional[List[str]] = None  # Specific dignities to include
-    exclude_dignities: Optional[List[str]] = None  # Specific dignities to exclude
-    
-    # Retrograde filter
-    include_retrograde: Optional[bool] = None  # True/False/None (all)
+    include_bodies: Optional[List[str]] = None
+    exclude_bodies: Optional[List[str]] = None
+    include_signs: Optional[List[str]] = None
+    exclude_signs: Optional[List[str]] = None
+    include_elements: Optional[List[str]] = None
+    exclude_elements: Optional[List[str]] = None
+    include_modalities: Optional[List[str]] = None
+    exclude_modalities: Optional[List[str]] = None
+    include_houses: Optional[List[int]] = None
+    exclude_houses: Optional[List[int]] = None
+    include_dignities: Optional[List[str]] = None
+    exclude_dignities: Optional[List[str]] = None
+    include_retrograde: Optional[bool] = None
     
     def matches(self, body: Body) -> bool:
-        """Check if a body matches the filter criteria."""
-        # Body type filters
-        if body.body_type == "Planet" and not self.include_planets:
-            return False
-        if body.body_type == "Luminary" and not self.include_luminaries:
-            return False
-        if body.body_type == "Asteroid" and not self.include_asteroids:
-            return False
-        if body.body_type == "Axis" and not self.include_axes:
-            return False
-        if body.body_type == "LunarNode" and not self.include_lunar_nodes:
-            return False
-        if body.body_type == "Lilith" and not self.include_lilith:
-            return False
-        
-        # Specific body filters
-        if self.include_bodies and body.name not in self.include_bodies:
-            return False
-        if self.exclude_bodies and body.name in self.exclude_bodies:
-            return False
-        
-        # Sign filters
-        if self.include_signs and body.sign.name not in self.include_signs:
-            return False
-        if self.exclude_signs and body.sign.name in self.exclude_signs:
-            return False
-        
-        # Element filters
-        if self.include_elements and body.sign.element not in self.include_elements:
-            return False
-        if self.exclude_elements and body.sign.element in self.exclude_elements:
-            return False
-        
-        # Modality filters
-        if self.include_modalities and body.sign.modality not in self.include_modalities:
-            return False
-        if self.exclude_modalities and body.sign.modality in self.exclude_modalities:
-            return False
-        
-        # House filters
-        if self.include_houses and body.house not in self.include_houses:
-            return False
-        if self.exclude_houses and body.house in self.exclude_houses:
-            return False
-        
-        # Dignity filters
-        if self.include_dignities and body.dignity not in self.include_dignities:
-            return False
-        if self.exclude_dignities and body.dignity in self.exclude_dignities:
-            return False
-        
-        # Retrograde filter
-        if self.include_retrograde is not None and body.is_retrograde != self.include_retrograde:
-            return False
-        
+        if body.body_type == "Planet" and not self.include_planets: return False
+        if body.body_type == "Luminary" and not self.include_luminaries: return False
+        if body.body_type == "Asteroid" and not self.include_asteroids: return False
+        if body.body_type == "Axis" and not self.include_axes: return False
+        if body.body_type == "LunarNode" and not self.include_lunar_nodes: return False
+        if body.body_type == "Lilith" and not self.include_lilith: return False
+        if self.include_bodies and body.name not in self.include_bodies: return False
+        if self.exclude_bodies and body.name in self.exclude_bodies: return False
+        if self.include_signs and body.sign.name not in self.include_signs: return False
+        if self.exclude_signs and body.sign.name in self.exclude_signs: return False
+        if self.include_elements and body.sign.element not in self.include_elements: return False
+        if self.exclude_elements and body.sign.element in self.exclude_elements: return False
+        if self.include_modalities and body.sign.modality not in self.include_modalities: return False
+        if self.exclude_modalities and body.sign.modality in self.exclude_modalities: return False
+        if self.include_houses and body.house not in self.include_houses: return False
+        if self.exclude_houses and body.house in self.exclude_houses: return False
+        if self.include_dignities and body.dignity not in self.include_dignities: return False
+        if self.exclude_dignities and body.dignity in self.exclude_dignities: return False
+        if self.include_retrograde is not None and body.is_retrograde != self.include_retrograde: return False
         return True
 
 @dataclass
@@ -150,36 +185,31 @@ class House:
     id: int
     cusp_longitude: float
     sign: Sign
-    classic_ruler: Optional[Body] = None # The Body object that classically rules this house
-    modern_ruler: Optional[Body] = None # The Body object that modernly rules this house
-    classic_ruler_house: Optional[int] = None # The house where the classic ruler is located
-    modern_ruler_house: Optional[int] = None # The house where the modern ruler is located
+    classic_ruler: Optional[Body] = None
+    modern_ruler: Optional[Body] = None
+    classic_ruler_house: Optional[int] = None
+    modern_ruler_house: Optional[int] = None
 
     @property
     def dms(self) -> str:
-        """Returns the cusp longitude in Degrees°Minutes' format within its sign."""
-        deg_in_sign = self.cusp_longitude % 30
-        deg = int(deg_in_sign)
-        minute = int((deg_in_sign - deg) * 60)
-        return f"{deg:02d}°{minute:02d}'"
+        """Returns the cusp longitude in Degrees°Minutes'Seconds" format within its sign."""
+        return decimal_to_dms_string(self.cusp_longitude, 'position')
 
 @dataclass
 class Aspect:
     """Represents an aspectual relationship between two celestial bodies."""
     body1: Body
     body2: Body
-    aspect_type: str  # e.g., "Trine", "Square"
+    aspect_type: str
     symbol: str
     orb: float
     is_applying: bool
 
     @property
     def orb_str(self) -> str:
-        """Returns the orb value in Degrees°Minutes' format."""
-        orb_abs = abs(self.orb)
-        deg = int(orb_abs)
-        minute = int((orb_abs - deg) * 60)
-        return f"{deg}°{minute:02d}'"
+        """Returns the orb value in Degrees°Minutes'Seconds" format with sign."""
+        sign = "-" if self.orb < 0 else ""
+        return sign + decimal_to_dms_string(self.orb, 'orb')
 
 @dataclass
 class OrbConfig:
@@ -190,7 +220,6 @@ class OrbConfig:
     
     @classmethod
     def from_dict(cls, config_dict: dict) -> 'OrbConfig':
-        """Create OrbConfig from dictionary."""
         return cls(
             luminaries=config_dict.get('luminaries', {}),
             angles=config_dict.get('angles', {}),
@@ -198,9 +227,8 @@ class OrbConfig:
         )
     
     def to_dict(self) -> dict:
-        """Convert OrbConfig to dictionary."""
         return {
             'luminaries': self.luminaries,
             'angles': self.angles,
             'planets': self.planets
-        } 
+        }

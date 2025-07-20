@@ -8,7 +8,7 @@ from typing import List, Dict, Optional, Union, Any
 from .engine import AstroEngine
 from .constants import (
     PLANET_NAMES, AXES_NAMES, MODALITIES, ELEMENTS, POLARITIES, 
-    create_orb_config, ALL_BODY_NAMES, BODY_TYPE_MAPPINGS, VALID_BODY_TYPES, BodyType
+    create_orb_config, ALL_BODY_NAMES, BODY_TYPE_MAPPINGS, VALID_BODY_TYPES, BODY_TYPES
 )
 from .models import Body, House, Aspect, BodyFilter
 
@@ -98,7 +98,7 @@ class NatalChart:
         """Returns a celestial body or axis object by its name from the central dictionary."""
         return self.bodies_dict.get(name)
 
-    def get_bodies_by_type(self, body_type: BodyType) -> List[Body]:
+    def get_bodies_by_type(self, body_type: BODY_TYPES) -> List[Body]:
         """
         Returns all celestial bodies of a specific type.
         

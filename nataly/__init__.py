@@ -11,8 +11,9 @@ from .constants import (
     MODALITIES, ELEMENTS, POLARITIES,
     LUMINARIES, MAJOR_PLANETS, ASTEROIDS, LUNAR_NODES, LILITH_BODIES, ANGLES,
     PLANETS, ALL_BODIES, ALL_BODY_NAMES,
-    BODY_TYPE_MAPPINGS, VALID_BODY_TYPES, BodyType
+    BODY_TYPE_MAPPINGS, VALID_BODY_TYPES, BODY_TYPES
 )
+from .config import NatalyConfig, get_config, set_ephe_path, get_ephe_path, create_config
 
 __version__ = "0.1.0"
 __author__ = "Göker"
@@ -34,6 +35,13 @@ __all__ = [
     # Configuration functions
     "create_orb_config",
     "set_default_orb_config",
+    
+    # Configuration management
+    "NatalyConfig",
+    "get_config",
+    "set_ephe_path",
+    "get_ephe_path",
+    "create_config",
     
     # Constants and data
     "SIGNS",

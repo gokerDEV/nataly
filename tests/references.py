@@ -1,4 +1,4 @@
-### Joe Doe -  astro.com reference
+### Joe Doe - astro.com reference
 # born on Tu., 27 February 1990
 # in Izmir, TUR, 27e09, 38n25
 # Time 9:15 a.m.
@@ -8,10 +8,13 @@ from datetime import datetime
 
 BIRTH_DATE = datetime(1990, 2, 27, 7, 15)
 BIRTH_LOCATION = (27.09, 38.25)
+BIRTH_LOCATION_DETAILED = (27.150, 38.4167)
 
-# Planet data: Planet, Longitude, House, Speed, Latitude, Declination
+# Planet data: Planet, Sign, Longitude, House, Speed, Latitude, Declination
+# 'sign' anahtarı, testlerin doğru çalışması için eklenmiştir.
 PLANETS = {
     'Sun': {
+        'sign': 'Pisces',
         'longitude': '8°26\'3"',
         'house': 11,
         'speed': '1°0\'18"',
@@ -19,6 +22,7 @@ PLANETS = {
         'declination': '8°24\'30"S'
     },
     'Moon': {
+        'sign': 'Aries',
         'longitude': '4°13\'13"',
         'house': 12,
         'speed': '14°31\'46"',
@@ -26,6 +30,7 @@ PLANETS = {
         'declination': '5°14\'33"N'
     },
     'Mercury': {
+        'sign': 'Aquarius',
         'longitude': '22°41\'34"',
         'house': 11,
         'speed': '1°37\'1"',
@@ -33,6 +38,7 @@ PLANETS = {
         'declination': '15°52\'41"S'
     },
     'Venus': {
+        'sign': 'Capricorn',
         'longitude': '27°8\'57"',
         'house': 10,
         'speed': '35\'46"',
@@ -40,6 +46,7 @@ PLANETS = {
         'declination': '15°33\'11"S'
     },
     'Mars': {
+        'sign': 'Capricorn',
         'longitude': '20°53\'21"',
         'house': 9,
         'speed': '44\'5"',
@@ -47,6 +54,7 @@ PLANETS = {
         'declination': '22°32\'44"S'
     },
     'Jupiter': {
+        'sign': 'Cancer',
         'longitude': '0°49\'7"',
         'house': 3,
         'speed': '30"',
@@ -54,6 +62,7 @@ PLANETS = {
         'declination': '23°27\'21"N'
     },
     'Saturn': {
+        'sign': 'Capricorn',
         'longitude': '21°57\'34"',
         'house': 10,
         'speed': '5\'36"',
@@ -61,6 +70,7 @@ PLANETS = {
         'declination': '21°25\'20"S'
     },
     'Uranus': {
+        'sign': 'Capricorn',
         'longitude': '8°42\'55"',
         'house': 9,
         'speed': '2\'13"',
@@ -68,6 +78,7 @@ PLANETS = {
         'declination': '23°26\'25"S'
     },
     'Neptune': {
+        'sign': 'Capricorn',
         'longitude': '13°56\'53"',
         'house': 9,
         'speed': '1\'30"',
@@ -75,6 +86,7 @@ PLANETS = {
         'declination': '21°52\'0"S'
     },
     'Pluto': {
+        'sign': 'Scorpio',
         'longitude': '17°46\'5"',
         'house': 7,
         'speed': '-17"',
@@ -82,6 +94,7 @@ PLANETS = {
         'declination': '2°0\'28"S'
     },
     'Mean Node': {
+        'sign': 'Aquarius',
         'longitude': '15°25\'39"',
         'house': 10,
         'speed': '-3\'11"',
@@ -89,6 +102,7 @@ PLANETS = {
         'declination': '16°12\'45"S'
     },
     'True Node': {
+        'sign': 'Aquarius',
         'longitude': '16°23\'26"',
         'house': 11,
         'speed': '-3\'7"',
@@ -96,6 +110,7 @@ PLANETS = {
         'declination': '15°55\'34"S'
     },
     'Chiron': {
+        'sign': 'Cancer',
         'longitude': '10°45\'34"',
         'house': 3,
         'speed': '-1\'26"',
@@ -168,7 +183,7 @@ HOUSES = {
     }
 }
 
-# Element and modality distributions
+# Element and modality distributions (Bu bölüm 'sign' verisini çıkarmak için kullanıldı)
 DISTRIBUTIONS = {
     'Fire': {
         'Cardinal': ['Moon'],
@@ -176,8 +191,8 @@ DISTRIBUTIONS = {
         'Mutable': []
     },
     'Earth': {
-        'Cardinal': ['Venus', 'Mars', 'Saturn', 'Uranus', 'Neptune', 'AC', 'MC'],
-        'Fixed': [],
+        'Cardinal': ['Venus', 'Mars', 'Saturn', 'Uranus', 'Neptune', 'MC'],
+        'Fixed': ['AC'],
         'Mutable': []
     },
     'Air': {
@@ -204,7 +219,7 @@ ASPECTS = {
     ('Chiron', 'Sun'): {'type': 'Trine', 'orb': '2°20a'},
     ('AC', 'Sun'): {'type': 'Sextile', 'orb': '-2°20a'},
     ('MC', 'Sun'): {'type': 'Conjunction', 'orb': '2°23a'},
-    
+
     # Moon aspects
     ('Mars', 'Moon'): {'type': 'Square', 'orb': '1°20s'},
     ('Jupiter', 'Moon'): {'type': 'Square', 'orb': '-3°24s'},
@@ -215,7 +230,7 @@ ASPECTS = {
     ('Chiron', 'Moon'): {'type': 'Square', 'orb': '6°32a'},
     ('AC', 'Moon'): {'type': 'Semisextile', 'orb': '1°53s'},
     ('MC', 'Moon'): {'type': 'Square', 'orb': '1°10a'},
-    
+
     # Mercury aspects
     ('Mars', 'Mercury'): {'type': 'Semisextile', 'orb': '1°48s'},
     ('Jupiter', 'Mercury'): {'type': 'Trine', 'orb': '8°08a'},
@@ -224,63 +239,50 @@ ASPECTS = {
     ('Pluto', 'Mercury'): {'type': 'Square', 'orb': '4°55s'},
     ('AC', 'Mercury'): {'type': 'Square', 'orb': '1°25s'},
     ('MC', 'Mercury'): {'type': 'Semisextile', 'orb': '1°38a'},
-    
+
     # Venus aspects
     ('Mars', 'Venus'): {'type': 'Conjunction', 'orb': '6°16a'},
     ('Saturn', 'Venus'): {'type': 'Conjunction', 'orb': '5°11s'},
     ('AC', 'Venus'): {'type': 'Square', 'orb': '8°58s'},
     ('MC', 'Venus'): {'type': 'Conjunction', 'orb': '6°05a'},
-    
+
     # Mars aspects
     ('Saturn', 'Mars'): {'type': 'Conjunction', 'orb': '1°04a'},
     ('Neptune', 'Mars'): {'type': 'Conjunction', 'orb': '6°56s'},
     ('Pluto', 'Mars'): {'type': 'Sextile', 'orb': '3°07s'},
     ('MC', 'Mars'): {'type': 'Conjunction', 'orb': '0°10s'},
-    
+
     # Jupiter aspects
     ('Uranus', 'Jupiter'): {'type': 'Opposition', 'orb': '-7°54s'},
     ('Pluto', 'Jupiter'): {'type': 'Opposition', 'orb': '1°57a'},
     ('True Node', 'Jupiter'): {'type': 'Opposition', 'orb': '-0°34a'},
     ('Chiron', 'Jupiter'): {'type': 'Conjunction', 'orb': '9°56a'},
     ('AC', 'Jupiter'): {'type': 'Sextile', 'orb': '-5°18s'},
-    
+
     # Saturn aspects
     ('Neptune', 'Saturn'): {'type': 'Conjunction', 'orb': '8°01s'},
     ('Pluto', 'Saturn'): {'type': 'Sextile', 'orb': '4°11s'},
     ('MC', 'Saturn'): {'type': 'Conjunction', 'orb': '0°54a'},
-    
+
     # Uranus aspects
     ('Neptune', 'Uranus'): {'type': 'Conjunction', 'orb': '5°14a'},
     ('Chiron', 'Uranus'): {'type': 'Opposition', 'orb': '-2°03a'},
     ('AC', 'Uranus'): {'type': 'Trine', 'orb': '-2°36a'},
-    
+
     # Neptune aspects
     ('Pluto', 'Neptune'): {'type': 'Sextile', 'orb': '-3°49a'},
     ('Chiron', 'Neptune'): {'type': 'Opposition', 'orb': '-3°11s'},
     ('AC', 'Neptune'): {'type': 'Trine', 'orb': '-7°50a'},
     ('MC', 'Neptune'): {'type': 'Conjunction', 'orb': '7°07s'},
-    
+
     # Pluto aspects
     ('True Node', 'Pluto'): {'type': 'Square', 'orb': '-1°23s'},
     ('Chiron', 'Pluto'): {'type': 'Trine', 'orb': '7°01s'},
     ('MC', 'Pluto'): {'type': 'Sextile', 'orb': '3°17s'},
-    
+
     # True Node aspects
     ('Chiron', 'True Node'): {'type': 'Biquintile', 'orb': '0°22s'},
-    
+
     # Chiron aspects
     ('AC', 'Chiron'): {'type': 'Sextile', 'orb': '4°39a'}
-}
-
-
-# Aspect symbols mapping
-ASPECT_SYMBOLS = {
-    'Conjunction': '☌',
-    'Opposition': '☍', 
-    'Trine': '△',
-    'Square': '□',
-    'Sextile': '⚹',
-    'Semisextile': '⚻',
-    'Quincunx': 'Q',
-    'Biquintile': 'bQ'
 }
