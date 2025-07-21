@@ -8,10 +8,10 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="nataly",
-    version="0.1.2",
+    version="0.1.3",
     author="Göker",
     author_email="goker@goker.dev",
-    description="A Python library called Nataly",
+    description="A comprehensive astrology library for natal chart calculations, analysis, and geometric chart layout extraction.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/gokerDEV/nataly",

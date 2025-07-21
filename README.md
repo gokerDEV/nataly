@@ -3,6 +3,8 @@
 [![PyPI version](https://badge.fury.io/py/nataly.svg)](https://pypi.org/project/nataly/)
 [![Build Status](https://github.com/gokerDEV/nataly/actions/workflows/python-app.yml/badge.svg)](https://github.com/gokerDEV/nataly/actions)
 
+> **This library was developed to generate artistic natal posters with astronomical precision. For chart visuals and more details, visit: [https://goker.art/natal](https://goker.art/natal)**
+
 A comprehensive Python library for astrological chart calculations and analysis.
 
 ## Features
@@ -206,6 +208,36 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 5. Run the test suite
 6. Submit a pull request
 
+## Geometric Chart Layout (NEW in 0.1.3)
+
+Nataly now provides geometric layout data for visualizing natal charts via the `ChartLayout` class:
+
+```python
+from nataly import NatalChart, ChartLayout
+import datetime, pytz
+
+# Create a natal chart
+birth_dt = datetime.datetime(1990, 2, 27, 9, 15, tzinfo=pytz.UTC)
+chart = NatalChart(
+    person_name="Joe Doe",
+    dt_utc=birth_dt,
+    lat=38.4192,  # Izmir, Turkey
+    lon=27.1287
+)
+
+# Get geometric layout data for visualization
+layout = ChartLayout(chart)
+layout_data = layout.get_data()
+print("Chart center:", layout_data["center"])
+print("First house line:", layout_data["natal"]["houses"][0])
+print("First planet position:", layout_data["natal"]["bodies"][0])
+```
+
+See `examples/basic_usage.py` for a runnable sample.
+
+---
+
 ## Version History
 
+- 0.1.3: Added ChartLayout for geometric chart layout extraction and public API, new example in basic_usage.py
 - 0.1.0: Initial release with complete astrological functionality 

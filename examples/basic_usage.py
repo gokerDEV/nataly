@@ -83,6 +83,30 @@ def main():
     
     print("\n=== Example completed successfully! ===")
 
+    # 6. Natal chart layout example
+    print("\n6. Natal Chart Layout Example:")
+    try:
+        import datetime
+        import pytz
+        from nataly import NatalChart, ChartLayout
+        # Example birth data
+        birth_dt = datetime.datetime(1990, 2, 27, 9, 15, tzinfo=pytz.UTC)
+        chart = NatalChart(
+            person_name="Joe Doe",
+            dt_utc=birth_dt,
+            lat=38.4192,  # Izmir, Turkey
+            lon=27.1287
+        )
+        layout = ChartLayout(chart)
+        layout_data = layout.get_data()
+        print("   Chart layout data (truncated):")
+        print(f"   Center: {layout_data['center']}, Radius: {layout_data['radius']}")
+        print(f"   Houses: {layout_data['natal']['houses'][:2]} ...")
+        print(f"   Bodies: {layout_data['natal']['bodies'][:2]} ...")
+        print(f"   Aspects: {layout_data['natal']['aspects'][:2]} ...")
+    except Exception as e:
+        print(f"   [Error] Could not generate chart layout: {e}")
+
 
 if __name__ == "__main__":
     main() 
