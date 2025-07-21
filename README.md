@@ -1,5 +1,8 @@
 # Nataly
 
+[![PyPI version](https://badge.fury.io/py/nataly.svg)](https://pypi.org/project/nataly/)
+[![Build Status](https://github.com/gokerDEV/nataly/actions/workflows/python-app.yml/badge.svg)](https://github.com/gokerDEV/nataly/actions)
+
 A comprehensive Python library for astrological chart calculations and analysis.
 
 ## Features
