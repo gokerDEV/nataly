@@ -72,14 +72,35 @@ class AstroEngine:
     def _get_categorized_orb(self, aspect_name: str, p1_name: str, p2_name: str) -> float:
         """Determine appropriate orb for a planet pair and aspect."""
         if p1_name in ANGLES or p2_name in ANGLES:
-            category = 'angles'
+            # Angles should have proper orb limits for aspects
+            # Use the same orbs as major planets for angles
+            category = 'major_planets'
         elif p1_name in LUMINARIES or p2_name in LUMINARIES:
             category = 'luminaries'
+        elif p1_name in ['Uranus', 'Neptune', 'Pluto'] or p2_name in ['Uranus', 'Neptune', 'Pluto']:
+            category = 'outer_planets'
+        elif p1_name in ['Chiron', 'Ceres', 'Pallas', 'Juno', 'Vesta'] or p2_name in ['Chiron', 'Ceres', 'Pallas', 'Juno', 'Vesta']:
+            category = 'asteroids'
         else:
-            category = 'planets'
+            category = 'major_planets'
         
         category_config = getattr(self.orb_config, category, {})
-        return category_config.get(aspect_name, 0)
+        
+        # Map aspect names to orb config keys
+        if aspect_name in ["Conjunction", "Opposition", "Trine", "Square"]:
+            orb_key = "major_aspects"
+        elif aspect_name == "Sextile":
+            orb_key = "sextile"
+        elif aspect_name == "Semisextile":
+            orb_key = "semisextile"
+        elif aspect_name in ["Sesquiquadrate", "Semisquare", "Quincunx"]:
+            orb_key = "minor_aspects"
+        elif aspect_name in ["Quintile", "Biquintile"]:
+            orb_key = "quintile_aspects"
+        else:
+            orb_key = "major_aspects"  # Default fallback
+        
+        return category_config.get(orb_key, 0)
 
     def _calculate_angular_difference(self, lon1: float, lon2: float) -> float:
         """Calculate the shortest angular distance between two longitudes."""
@@ -142,8 +163,7 @@ class AstroEngine:
 
     def get_aspects(self, bodies1: Dict[str, Body], bodies2: Dict[str, Body] = None) -> List[Aspect]:
         """
-        Calculates aspects by finding the closest aspect type for each pair of bodies,
-        ignoring orb limits to find all potential aspects for comparison.
+        Calculates aspects using proper astrological orb limits and applying/separating logic.
         """
         if bodies2 is None:
             bodies2 = bodies1
@@ -164,36 +184,30 @@ class AstroEngine:
 
                 angular_diff = self._calculate_angular_difference(body1.longitude, body2.longitude)
                 
-                best_match = None
-                smallest_orb_abs = float('inf')
-
-                # First, try to find a major aspect within reasonable orb
-                major_aspects = ["Conjunction", "Opposition", "Trine", "Square", "Sextile"]
-                for aspect_name in major_aspects:
-                    if aspect_name in ASPECT_DATA:
-                        aspect_data = ASPECT_DATA[aspect_name]
-                        current_orb_abs = abs(angular_diff - aspect_data["angle"])
-                        # Major aspects get priority if orb is reasonable (within 10 degrees)
-                        if current_orb_abs < 10.0 and current_orb_abs < smallest_orb_abs:
-                            smallest_orb_abs = current_orb_abs
-                            best_match = (aspect_name, aspect_data)
-                
-                # If no major aspect found, find the aspect with the smallest absolute orb
-                if best_match is None:
-                    for aspect_name, aspect_data in ASPECT_DATA.items():
-                        current_orb_abs = abs(angular_diff - aspect_data["angle"])
-                        if current_orb_abs < smallest_orb_abs:
-                            smallest_orb_abs = current_orb_abs
-                            best_match = (aspect_name, aspect_data)
-                
-                if best_match:
-                    aspect_name, aspect_data = best_match
-                    is_applying = self._is_aspect_applying(body1, body2, aspect_data["angle"], angular_diff)
+                # Find all aspects within proper orb limits
+                valid_aspects = []
+                for aspect_name, aspect_data in ASPECT_DATA.items():
+                    orb_diff = angular_diff - aspect_data["angle"]
+                    orb_limit = self._get_categorized_orb(aspect_name, body1.name, body2.name)
                     
-                    # Calculate the orb with correct sign
-                    # Positive orb = applying, negative orb = separating
-                    orb_magnitude = abs(angular_diff - aspect_data["angle"])
-                    actual_orb = orb_magnitude if is_applying else -orb_magnitude
+                    # Check if aspect is within orb limit
+                    if abs(orb_diff) <= orb_limit:
+                        valid_aspects.append((aspect_name, aspect_data, orb_diff))
+                
+                # Apply aspect conflict prevention
+                best_aspect = self._resolve_aspect_conflicts(valid_aspects, body1, body2)
+                
+                if best_aspect:
+                    aspect_name, aspect_data, orb_diff = best_aspect
+                    
+                    # Use orb_diff directly without applying/separating logic
+                    # The sign of orb_diff indicates the direction from exact aspect
+                    actual_orb = orb_diff
+                    
+                    # Determine applying/separating based on orb sign
+                    # Positive orb_diff means we're past the exact aspect (separating)
+                    # Negative orb_diff means we're before the exact aspect (applying)
+                    is_applying = orb_diff < 0
                     
                     aspects.append(Aspect(
                         body1=body1,
@@ -205,34 +219,70 @@ class AstroEngine:
                     ))
         return aspects
 
-    def _is_aspect_applying(self, body1: Body, body2: Body, aspect_angle: float, angular_diff: float) -> bool:
+    def _resolve_aspect_conflicts(self, valid_aspects: List[tuple], body1: Body, body2: Body) -> tuple:
         """
-        Determines if an aspect is applying or separating.
+        Resolve aspect conflicts using Astrodienst logic.
+        Prevents weak aspects when stronger ones are present.
         """
-        if abs(body1.speed) > abs(body2.speed):
-            faster_body, slower_body = body1, body2
-        else:
-            faster_body, slower_body = body2, body1
-            
-        if abs(faster_body.speed) < 0.001:  # Very slow or stationary
-            return True
+        if not valid_aspects:
+            return None
+        
+        # Sort by aspect strength (major aspects first)
+        aspect_strength = {
+            "Conjunction": 1, "Opposition": 2, "Trine": 3, "Square": 4, "Sextile": 5,
+            "Quincunx": 6, "Semisquare": 7, "Sesquiquadrate": 8, "Semisextile": 9,
+            "Quintile": 10, "Biquintile": 11
+        }
+        
+        # Group aspects by strength
+        aspect_groups = {}
+        for aspect_name, aspect_data, orb_diff in valid_aspects:
+            strength = aspect_strength.get(aspect_name, 99)
+            if strength not in aspect_groups:
+                aspect_groups[strength] = []
+            aspect_groups[strength].append((aspect_name, aspect_data, orb_diff))
+        
+        # Check for conflicts and return the strongest aspect
+        for strength in sorted(aspect_strength.values()):
+            if strength in aspect_groups:
+                aspects_in_group = aspect_groups[strength]
+                
+                # If multiple aspects in same strength group, choose the one with smallest orb
+                if len(aspects_in_group) > 1:
+                    aspects_in_group.sort(key=lambda x: abs(x[2]))
+                
+                # Check if this aspect conflicts with stronger aspects
+                aspect_name = aspects_in_group[0][0]
+                if not self._has_aspect_conflict(aspect_name, aspect_groups, strength):
+                    return aspects_in_group[0]
+        
+        return None
 
-        # Calculate the direction of the faster body's movement
-        # Positive speed = moving forward (increasing longitude)
-        # Negative speed = moving backward (decreasing longitude)
+    def _has_aspect_conflict(self, aspect_name: str, aspect_groups: dict, current_strength: int) -> bool:
+        """
+        Check if an aspect conflicts with stronger aspects.
+        Only prevents very weak aspects when major ones exist.
+        """
+        # Define aspect conflicts (only prevent very weak aspects when major ones exist)
+        conflicts = {
+            "Semisextile": ["Conjunction", "Opposition", "Trine", "Square", "Sextile"],
+            "Quincunx": ["Conjunction", "Opposition", "Trine", "Square", "Sextile"],
+            "Quintile": ["Conjunction", "Opposition", "Trine", "Square", "Sextile"],
+            "Biquintile": ["Conjunction", "Opposition", "Trine", "Square", "Sextile"]
+        }
         
-        # Calculate the current angular distance
-        current_distance = angular_diff
+        if aspect_name not in conflicts:
+            return False
         
-        # Calculate what the distance would be if the faster body moved slightly
-        # in the direction of its current movement
-        movement_direction = 1 if faster_body.speed > 0 else -1
-        small_movement = 0.1  # Small test movement
+        # Check if any conflicting stronger aspect exists
+        for conflict_aspect in conflicts[aspect_name]:
+            conflict_strength = {
+                "Conjunction": 1, "Opposition": 2, "Trine": 3, "Square": 4, "Sextile": 5,
+                "Quincunx": 6, "Semisquare": 7, "Sesquiquadrate": 8, "Semisextile": 9,
+                "Quintile": 10, "Biquintile": 11
+            }.get(conflict_aspect, 99)
+            
+            if conflict_strength < current_strength and conflict_strength in aspect_groups:
+                return True
         
-        # Simulate a small movement of the faster body
-        new_faster_lon = (faster_body.longitude + movement_direction * small_movement) % 360
-        new_distance = self._calculate_angular_difference(new_faster_lon, slower_body.longitude)
-        
-        # If the distance is decreasing, the aspect is applying
-        # If the distance is increasing, the aspect is separating
-        return new_distance < current_distance
+        return False

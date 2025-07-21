@@ -247,51 +247,100 @@ PLANET_MAPPING_SWE = {
 }
 
 # --- ORB CONFIGURATIONS ---
+# Astrodienst's 5x5 matrix system with proper aspect names:
+# major_aspects = Conjunction, Opposition, Trine, Square
+# sextile = Sextile  
+# quincunx = Quincunx (150°)
+# minor_aspects = Sesquiquadrate, Semisquare, Semisextile (30°)
+# quintile_aspects = Quintile, Biquintile
+# 
+# NOTE: Astrodienst uses 3° for Quincunx and 1.5° for Semisextile (swapped!)
+
 ORB_CONFIGS = {
-    'Placidus': {
-        'luminaries': {
-            'Conjunction': 10.0, 'Opposition': 10.0, 'Trine': 8.0, 'Square': 8.0,
-            'Sextile': 6.0, 'Quincunx': 3.0, 'Sesquiquadrate': 3.0, 'Semisquare': 2.0,
-            'Semisextile': 2.0, 'Quintile': 2.0, 'Biquintile': 2.0
+    'Classical': {
+        'luminaries': {  # Sun, Moon
+            'major_aspects': 9.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 5.0,        # Sextile
+            'semisextile': 3.0,    # Semisextile (30°)
+            'minor_aspects': 1.5,  # Sesquiquadrate, Semisquare, Quincunx (150°)
+            'quintile_aspects': 1.0  # Quintile, Biquintile
         },
-        'angles': {
-            'Conjunction': 1.0, 'Opposition': 1.0, 'Trine': 1.0, 'Square': 1.0,
-            'Sextile': 1.0, 'Quincunx': 1.0, 'Sesquiquadrate': 1.0, 'Semisquare': 1.0,
-            'Semisextile': 1.0, 'Quintile': 1.0, 'Biquintile': 1.0
+        'major_planets': {  # Mercury, Venus, Mars, Jupiter, Saturn
+            'major_aspects': 7.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 5.0,        # Sextile
+            'semisextile': 3.0,    # Semisextile (30°)
+            'minor_aspects': 1.5,  # Sesquiquadrate, Semisquare, Quincunx (150°)
+            'quintile_aspects': 1.0  # Quintile, Biquintile
         },
-        'planets': {
-            'Conjunction': 8.0, 'Opposition': 8.0, 'Trine': 6.0, 'Square': 6.0,
-            'Sextile': 4.0, 'Quincunx': 2.0, 'Sesquiquadrate': 2.0, 'Semisquare': 1.5,
-            'Semisextile': 1.5, 'Quintile': 1.5, 'Biquintile': 1.5
-        }
+        'outer_planets': {  # Uranus, Neptune, Pluto
+            'major_aspects': 9.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 5.0,        # Sextile
+            'semisextile': 3.0,    # Semisextile (30°)
+            'minor_aspects': 1.5,  # Sesquiquadrate, Semisquare, Quincunx (150°)
+            'quintile_aspects': 1.0  # Quintile, Biquintile
+        },
+        'asteroids': {  # Chiron, etc.
+            'major_aspects': 5.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 5.0,        # Sextile
+            'semisextile': 3.0,    # Semisextile (30°)
+            'minor_aspects': 1.5,  # Sesquiquadrate, Semisquare, Quincunx (150°)
+            'quintile_aspects': 1.0  # Quintile, Biquintile
+        },
+        'angles': {  # AC, MC, IC, DC
+            'major_aspects': 0.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 0.0,        # Sextile
+            'semisextile': 0.0,    # Semisextile
+            'minor_aspects': 0.0,  # Sesquiquadrate, Semisquare, Quincunx
+            'quintile_aspects': 0.0  # Quintile, Biquintile
+        },
     },
-    'Koch': {
-        'luminaries': {
-            'Conjunction': 10.0, 'Opposition': 10.0, 'Trine': 8.0, 'Square': 8.0,
-            'Sextile': 6.0, 'Quincunx': 3.0, 'Sesquiquadrate': 3.0, 'Semisquare': 2.0,
-            'Semisextile': 2.0, 'Quintile': 2.0, 'Biquintile': 2.0
+    'Default': {
+        'luminaries': {  # Sun, Moon
+            'major_aspects': 10.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 6.0,         # Sextile
+            'semisextile': 3.0,     # Semisextile (30°)
+            'minor_aspects': 3.0,   # Sesquiquadrate, Semisquare, Quincunx (150°)
+            'quintile_aspects': 2.0  # Quintile, Biquintile
         },
-        'angles': {
-            'Conjunction': 1.0, 'Opposition': 1.0, 'Trine': 1.0, 'Square': 1.0,
-            'Sextile': 1.0, 'Quincunx': 1.0, 'Sesquiquadrate': 1.0, 'Semisquare': 1.0,
-            'Semisextile': 1.0, 'Quintile': 1.0, 'Biquintile': 1.0
+        'major_planets': {  # Mercury, Venus, Mars, Jupiter, Saturn
+            'major_aspects': 10.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 6.0,         # Sextile
+            'semisextile': 3.0,     # Semisextile (30°)
+            'minor_aspects': 3.0,   # Sesquiquadrate, Semisquare, Quincunx (150°)
+            'quintile_aspects': 2.0  # Quintile, Biquintile
         },
-        'planets': {
-            'Conjunction': 8.0, 'Opposition': 8.0, 'Trine': 6.0, 'Square': 6.0,
-            'Sextile': 4.0, 'Quincunx': 2.0, 'Sesquiquadrate': 2.0, 'Semisquare': 1.5,
-            'Semisextile': 1.5, 'Quintile': 1.5, 'Biquintile': 1.5
+        'outer_planets': {  # Uranus, Neptune, Pluto
+            'major_aspects': 10.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 6.0,         # Sextile
+            'semisextile': 3.0,     # Semisextile (30°)
+            'minor_aspects': 3.0,   # Sesquiquadrate, Semisquare, Quincunx (150°)
+            'quintile_aspects': 2.0  # Quintile, Biquintile
+        },
+        'asteroids': {  # Chiron, etc.
+            'major_aspects': 10.0,  # Conjunction, Opposition, Trine, Square
+            'sextile': 6.0,         # Sextile
+            'semisextile': 3.0,     # Semisextile (30°)
+            'minor_aspects': 3.0,   # Sesquiquadrate, Semisquare, Quincunx (150°)
+            'quintile_aspects': 2.0  # Quintile, Biquintile
+        },
+        'angles': {  # AC, MC, IC, DC
+            'major_aspects': 0.0,   # Conjunction, Opposition, Trine, Square
+            'sextile': 0.0,         # Sextile
+            'semisextile': 0.0,     # Semisextile
+            'minor_aspects': 0.0,   # Sesquiquadrate, Semisquare, Quincunx
+            'quintile_aspects': 0.0  # Quintile, Biquintile
         }
     }
 }
 
 # --- CONFIGURATION FUNCTIONS ---
-def create_orb_config(system: str = 'Placidus', custom_orbs: dict = None) -> OrbConfig:
+def create_orb_config(system: str = 'Default', custom_orbs: dict = None) -> OrbConfig:
     """Create an OrbConfig object with specified system or custom orbs."""
     if custom_orbs:
         return OrbConfig.from_dict(custom_orbs)
     
     if system not in ORB_CONFIGS:
-        system = 'Placidus'  # Default fallback
+        system = 'Classical'  # Default fallback
     
     return OrbConfig.from_dict(ORB_CONFIGS[system])
 
@@ -301,7 +350,7 @@ def set_default_orb_config(config: OrbConfig):
     DEFAULT_ORB_CONFIG = config
 
 # Initialize default orb config
-DEFAULT_ORB_CONFIG = create_orb_config('Placidus') 
+DEFAULT_ORB_CONFIG = create_orb_config('Default') 
 
 # # ZODIAC SIGN DEGREE OFFSETS
 # ZODIAC_SIGN_DEGREES = {

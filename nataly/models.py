@@ -213,22 +213,39 @@ class Aspect:
 
 @dataclass
 class OrbConfig:
-    """Configurable orb settings for different celestial body types."""
-    luminaries: dict
-    angles: dict
-    planets: dict
+    """Configurable orb settings for different celestial body types using Astrodienst's 5x5 matrix system."""
+    luminaries: dict      # Sun, Moon
+    major_planets: dict   # Mercury, Venus, Mars, Jupiter, Saturn
+    outer_planets: dict   # Uranus, Neptune, Pluto
+    asteroids: dict       # Chiron, etc.
+    cardinal_angles: dict # AC, MC
+    derived_angles: dict  # IC, DC
+    
+    # Aspect categories with proper names
+    aspect_categories = {
+        'major_aspects': ['Conjunction', 'Opposition', 'Trine', 'Square'], 
+        'sextile': ['Sextile'],                                             
+        'semisextile': ['Semisextile'],                                        
+        'minor_aspects': ['Sesquiquadrate', 'Semisquare', 'Quincunx'],   
+        'quintile_aspects': ['Quintile', 'Biquintile']                
+    }
     
     @classmethod
     def from_dict(cls, config_dict: dict) -> 'OrbConfig':
         return cls(
             luminaries=config_dict.get('luminaries', {}),
-            angles=config_dict.get('angles', {}),
-            planets=config_dict.get('planets', {})
+            major_planets=config_dict.get('major_planets', {}),
+            outer_planets=config_dict.get('outer_planets', {}),
+            asteroids=config_dict.get('asteroids', {}),
+            cardinal_angles=config_dict.get('cardinal_angles', {}),
+            derived_angles=config_dict.get('derived_angles', {})
         )
     
     def to_dict(self) -> dict:
         return {
             'luminaries': self.luminaries,
-            'angles': self.angles,
-            'planets': self.planets
+            'major_planets': self.major_planets,
+            'outer_planets': self.outer_planets,
+            'asteroids': self.asteroids,
+            'angles': self.cardinal_angles,
         }

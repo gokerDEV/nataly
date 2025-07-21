@@ -102,7 +102,7 @@ def compare_aspects(chart: NatalChart) -> bool:
             # For now, only check orb magnitude, not applying/separating status
             # The reference data seems to have incorrect applying/separating status
             type_ok = ref_data['type'] == lib_aspect.aspect_type
-            orb_ok = orb_diff < 1.0  # Increased tolerance to 1 degree
+            orb_ok = abs(orb_diff) < 1.0  # Increased tolerance to 1 degree
             
             if type_ok and orb_ok:
                 status = "✅"
