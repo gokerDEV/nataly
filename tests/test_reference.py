@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from nataly import NatalChart
 from nataly.models import parse_longitude_to_decimal, parse_dms_to_decimal
+from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 from references import PLANETS, HOUSES, ASPECTS, BIRTH_DATE, BIRTH_LOCATION_DETAILED
 
 def compare_planetary_positions(chart: NatalChart) -> bool:

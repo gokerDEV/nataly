@@ -17,6 +17,7 @@ import datetime
 import pytz
 from typing import Dict, List, Optional, Tuple
 from nataly import NatalChart, create_orb_config, BodyFilter
+from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 
 class AstrologicalAnalyzer:
     """

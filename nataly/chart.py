@@ -8,7 +8,7 @@ from typing import List, Dict, Optional, Union, Any
 from .engine import AstroEngine
 from .constants import (
      MODALITIES, ELEMENTS, 
-    ALL_BODY_NAMES, VALID_BODY_TYPES, BODY_TYPES
+    ALL_BODY_NAMES, VALID_BODY_TYPES, BODY_TYPES, ASTROLOGICAL_BODY_GROUPS
 )
 from .models import Body, BodyFilter
 
@@ -36,15 +36,15 @@ class NatalChart:
         self.longitude = lon
 
         engine = AstroEngine(orb_config, ephe_path)
-        self.axes_names = engine.axes_names
         self.planets_names = ALL_BODY_NAMES
+        self.chart_angles = list(ASTROLOGICAL_BODY_GROUPS["chart_angles"])
         
         self.bodies_dict, self.houses = engine.get_planets_and_houses(dt_utc, lat, lon)
         # Calculate aspects between all celestial bodies
         self.aspects = engine.get_aspects(self.bodies_dict)
 
         self.planets = [b for b in self.bodies_dict.values() if b.name in self.planets_names]
-        self.axes = {b.name: b for b in self.bodies_dict.values() if b.name in self.axes_names}
+        self.axes = {b.name: b for b in self.bodies_dict.values() if b.name in self.chart_angles}
         self.ascendant = self.axes.get("AC")
         self.midheaven = self.axes.get("MC")
 
@@ -66,7 +66,7 @@ class NatalChart:
                 self.element_distribution[body.sign.element]['bodies'].append(body)
                 self.modality_distribution[body.sign.modality]['bodies'].append(body)
                 self.polarity_distribution[body.sign.polarity]['bodies'].append(body)
-            if body.name not in self.axes_names:
+            if body.name not in self.chart_angles:
                 if 1 <= body.house <= 3: self.quadrant_distribution['1st ◵']['bodies'].append(body)
                 elif 4 <= body.house <= 6: self.quadrant_distribution['2nd ◶']['bodies'].append(body)
                 elif 7 <= body.house <= 9: self.quadrant_distribution['3rd ◷']['bodies'].append(body)

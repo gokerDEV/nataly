@@ -4,7 +4,7 @@
 import os
 from typing import Optional
 from pathlib import Path
-from .constants import ORB_CONFIGS
+from .constants import ORB_CONFIGS, ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 
 class NatalyConfig:
     """Configuration class for nataly library settings."""

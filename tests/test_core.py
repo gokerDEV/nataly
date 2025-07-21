@@ -4,6 +4,7 @@ Tests for the core module of Nataly library.
 
 import pytest
 from nataly.core import NatalyCore, example_function, process_data, create_core
+from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 
 
 class TestNatalyCore:

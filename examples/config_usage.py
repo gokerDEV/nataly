@@ -6,6 +6,7 @@ Example showing how to configure ephemeris file paths in nataly library.
 import datetime
 import pytz
 from nataly import NatalChart, set_ephe_path, get_ephe_path, create_config
+from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 
 def example_global_config():
     """Example using global configuration."""

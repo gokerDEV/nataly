@@ -7,6 +7,7 @@ This script demonstrates the core functionality of the Nataly library.
 
 from nataly import NatalyCore, example_function, process_data
 from nataly.utils import save_to_json, load_from_json, format_timestamp
+from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 
 
 def main():

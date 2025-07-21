@@ -3,7 +3,7 @@
 
 from dataclasses import dataclass
 from typing import Optional, Literal, List, Dict, Any
-from .constants import SIGNS, ZODIAC_SIGN_DEGREES
+from .constants import SIGNS, ZODIAC_SIGN_DEGREES, ASTROLOGICAL_BODY_GROUPS
 
 
 

@@ -8,7 +8,7 @@ from typing import List, Dict
 from .models import Body, House, Aspect, get_sign
 from .constants import (
     SIGN_NAMES_BY_DEGREE, DIGNITY_RULES, ASPECT_DATA,
-    ALL_BODY_NAMES,ANGLES_SYMBOLS,
+    ALL_BODY_NAMES, ANGLES_SYMBOLS, ASTROLOGICAL_BODY_GROUPS,
     PLANET_MAPPING_SWE,
     BODY_TYPE_MAPPINGS, ORB_BODY_GROUPS, ORB_ASPECT_GROUPS
 )
@@ -32,7 +32,7 @@ class AstroEngine:
         swe.set_ephe_path(self.ephe_path)
         
         
-        self.axes_names = list(set(ANGLES_SYMBOLS.keys()))
+        self.chart_angles = list(ASTROLOGICAL_BODY_GROUPS["chart_angles"])
 
     def _get_sign_from_longitude(self, longitude: float):
         """Get zodiac sign from longitude as a Sign object using get_sign."""
@@ -123,10 +123,12 @@ class AstroEngine:
             planet_id = PLANET_MAPPING_SWE.get(name)
             lon_val, speed = 0.0, 0.0
 
-            if name == "AC": lon_val = ascmc[0]
-            elif name == "MC": lon_val = ascmc[1]
-            elif name == "IC": lon_val = (ascmc[1] + 180) % 360
-            elif name == "DC": lon_val = (ascmc[0] + 180) % 360
+            if name in self.chart_angles:
+                if name == "AC": lon_val = ascmc[0]
+                elif name == "MC": lon_val = ascmc[1]
+                elif name == "IC": lon_val = (ascmc[1] + 180) % 360
+                elif name == "DC": lon_val = (ascmc[0] + 180) % 360
+                else: continue
             elif name == "South Node":
                 if "True Node" in bodies_dict:
                     lon_val = (bodies_dict["True Node"].longitude + 180) % 360
@@ -146,7 +148,7 @@ class AstroEngine:
 
             bodies_dict[name] = Body(
                 name=name, body_type=body_type, longitude=lon_val, speed=speed,
-                is_retrograde=speed < 0 and name not in self.axes_names,
+                is_retrograde=speed < 0 and name not in self.chart_angles,
                 sign=sign, house=house, dignity=dignity
             )
 

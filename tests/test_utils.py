@@ -19,6 +19,7 @@ from nataly.utils import (
     setup_logging,
     validate_data,
 )
+from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 
 
 class TestLogging:

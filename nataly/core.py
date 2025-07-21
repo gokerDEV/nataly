@@ -6,6 +6,7 @@ of the Nataly library.
 """
 
 from typing import Any, Dict, List, Optional, Union
+from .constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 
 
 class NatalyCore:

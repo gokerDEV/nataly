@@ -6,7 +6,8 @@ import datetime
 import pytz
 import pytest
 
-from nataly import NatalChart, create_orb_config, BodyFilter, SIGNS, ASPECT_DATA
+from nataly import NatalChart, create_orb_config, BodyFilter
+from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS, ASPECT_DATA
 
 
 class TestNatalyLibrary:
@@ -38,9 +39,13 @@ class TestNatalyLibrary:
         # Test default creation
         config = create_orb_config()
         assert config is not None
-        assert hasattr(config, 'luminaries')
-        assert hasattr(config, 'planets')
-        assert hasattr(config, 'angles')
+        # Check canonical orb config dict keys
+        assert "orb_luminaries" in config
+        assert "orb_personal" in config
+        assert "orb_social" in config
+        assert "orb_transpersonal_chiron" in config
+        assert "orb_other_bodies" in config
+        assert "orb_points" in config
         
         # Test custom creation
         custom_config = create_orb_config('Placidus')

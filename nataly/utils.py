@@ -11,6 +11,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
+from .constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -35,6 +37,8 @@ def setup_logging(level: str = "INFO", log_file: Optional[str] = None) -> None:
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=handlers
     )
+    # Explicitly set nataly.utils logger level for test compatibility
+    logging.getLogger("nataly.utils").setLevel(log_level)
 
 
 def save_to_json(data: Any, filepath: Union[str, Path], indent: int = 2) -> bool:
