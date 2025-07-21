@@ -5,14 +5,14 @@ import swisseph as swe
 import os
 from typing import List, Dict
 
-from .models import Body, House, Aspect, Sign, OrbConfig
+from .models import Body, House, Aspect, get_sign
 from .constants import (
-    SIGNS, SIGN_NAMES_BY_DEGREE, DIGNITY_RULES, ASPECT_DATA,
-    PLANET_NAMES, AXES_NAMES, ALL_BODY_NAMES, MAJOR_ASPECTS,
-    PLANET_MAPPING_SWE, ORB_CONFIGS, ANGLES, LUMINARIES,
-    BODY_TYPE_MAPPINGS, create_orb_config
+    SIGN_NAMES_BY_DEGREE, DIGNITY_RULES, ASPECT_DATA,
+    ALL_BODY_NAMES,ANGLES_SYMBOLS,
+    PLANET_MAPPING_SWE,
+    BODY_TYPE_MAPPINGS, ORB_BODY_GROUPS, ORB_ASPECT_GROUPS
 )
-
+from .config import create_orb_config
 
 class AstroEngine:
     """Core class that performs all astrological calculations and returns structured data models."""
@@ -27,18 +27,18 @@ class AstroEngine:
         """
         if orb_config is None:
             orb_config = create_orb_config()
-        elif isinstance(orb_config, dict):
-            orb_config = OrbConfig.from_dict(orb_config)
-
         self.orb_config = orb_config
         self.ephe_path = ephe_path
         swe.set_ephe_path(self.ephe_path)
+        
+        
+        self.axes_names = list(set(ANGLES_SYMBOLS.keys()))
 
-    def _get_sign_from_longitude(self, longitude: float) -> Sign:
-        """Get zodiac sign from longitude."""
+    def _get_sign_from_longitude(self, longitude: float):
+        """Get zodiac sign from longitude as a Sign object using get_sign."""
         sign_index = int(longitude / 30)
         sign_name = SIGN_NAMES_BY_DEGREE[sign_index]
-        return SIGNS[sign_name]
+        return get_sign(sign_name)
 
     def _get_house_from_longitude(self, longitude: float, house_cusps: List[float]) -> int:
         """Get house number from longitude using house cusps."""
@@ -71,36 +71,41 @@ class AstroEngine:
 
     def _get_categorized_orb(self, aspect_name: str, p1_name: str, p2_name: str) -> float:
         """Determine appropriate orb for a planet pair and aspect."""
-        if p1_name in ANGLES or p2_name in ANGLES:
-            # Angles should have proper orb limits for aspects
-            # Use the same orbs as major planets for angles
-            category = 'major_planets'
-        elif p1_name in LUMINARIES or p2_name in LUMINARIES:
-            category = 'luminaries'
-        elif p1_name in ['Uranus', 'Neptune', 'Pluto'] or p2_name in ['Uranus', 'Neptune', 'Pluto']:
-            category = 'outer_planets'
-        elif p1_name in ['Chiron', 'Ceres', 'Pallas', 'Juno', 'Vesta'] or p2_name in ['Chiron', 'Ceres', 'Pallas', 'Juno', 'Vesta']:
-            category = 'asteroids'
+        # Use canonical orb config keys from ORB_BODY_GROUPS and ORB_CONFIGS
+        # Determine which group each body belongs to
+        def get_orb_group(name):
+            for group_key, group_list in ORB_BODY_GROUPS.items():
+                if name in group_list:
+                    return group_key
+            return None
+        group1 = get_orb_group(p1_name)
+        group2 = get_orb_group(p2_name)
+        # Prefer the more restrictive group (if one is 'other', use the more specific)
+        group = group1 or group2 or 'orb_other_bodies'
+        # Fallback to orb_other_bodies if not found
+        if group1 and group2:
+            # If one is orb_other_bodies, prefer the other
+            if group1 == 'orb_other_bodies':
+                group = group2
+            elif group2 == 'orb_other_bodies':
+                group = group1
+            else:
+                group = group1  # default to group1
+        # Map aspect to orb type
+        if aspect_name in ORB_ASPECT_GROUPS['major']:
+            orb_type = 'major'
+        elif aspect_name in ORB_ASPECT_GROUPS['sextile']:
+            orb_type = 'sextile'
+        elif aspect_name in ORB_ASPECT_GROUPS['adjustment']:
+            orb_type = 'adjustment'
+        elif aspect_name in ORB_ASPECT_GROUPS['tension']:
+            orb_type = 'tension'
+        elif aspect_name in ORB_ASPECT_GROUPS['creative']:
+            orb_type = 'creative'
         else:
-            category = 'major_planets'
-        
-        category_config = getattr(self.orb_config, category, {})
-        
-        # Map aspect names to orb config keys
-        if aspect_name in ["Conjunction", "Opposition", "Trine", "Square"]:
-            orb_key = "major_aspects"
-        elif aspect_name == "Sextile":
-            orb_key = "sextile"
-        elif aspect_name == "Semisextile":
-            orb_key = "semisextile"
-        elif aspect_name in ["Sesquiquadrate", "Semisquare", "Quincunx"]:
-            orb_key = "minor_aspects"
-        elif aspect_name in ["Quintile", "Biquintile"]:
-            orb_key = "quintile_aspects"
-        else:
-            orb_key = "major_aspects"  # Default fallback
-        
-        return category_config.get(orb_key, 0)
+            orb_type = 'major'  # fallback
+        config = self.orb_config.get(group, {})
+        return config.get(orb_type, 0)
 
     def _calculate_angular_difference(self, lon1: float, lon2: float) -> float:
         """Calculate the shortest angular distance between two longitudes."""
@@ -118,12 +123,10 @@ class AstroEngine:
             planet_id = PLANET_MAPPING_SWE.get(name)
             lon_val, speed = 0.0, 0.0
 
-            if name in AXES_NAMES:
-                if name == "AC": lon_val = ascmc[0]
-                elif name == "MC": lon_val = ascmc[1]
-                elif name == "IC": lon_val = (ascmc[1] + 180) % 360
-                elif name == "DC": lon_val = (ascmc[0] + 180) % 360
-                else: continue
+            if name == "AC": lon_val = ascmc[0]
+            elif name == "MC": lon_val = ascmc[1]
+            elif name == "IC": lon_val = (ascmc[1] + 180) % 360
+            elif name == "DC": lon_val = (ascmc[0] + 180) % 360
             elif name == "South Node":
                 if "True Node" in bodies_dict:
                     lon_val = (bodies_dict["True Node"].longitude + 180) % 360
@@ -143,7 +146,7 @@ class AstroEngine:
 
             bodies_dict[name] = Body(
                 name=name, body_type=body_type, longitude=lon_val, speed=speed,
-                is_retrograde=speed < 0 and name not in AXES_NAMES,
+                is_retrograde=speed < 0 and name not in self.axes_names,
                 sign=sign, house=house, dignity=dignity
             )
 

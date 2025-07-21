@@ -4,6 +4,7 @@
 import os
 from typing import Optional
 from pathlib import Path
+from .constants import ORB_CONFIGS
 
 class NatalyConfig:
     """Configuration class for nataly library settings."""
@@ -85,3 +86,20 @@ def get_ephe_path() -> str:
 def create_config(ephe_path: Optional[str] = None) -> NatalyConfig:
     """Create a new configuration instance."""
     return NatalyConfig(ephe_path) 
+
+def create_orb_config(system: str = 'Default', custom_orbs: dict = None):
+    """Creates an orb configuration dictionary from a predefined system or a custom dictionary."""
+    if custom_orbs:
+        # In a real application, validate the custom_orbs structure here.
+        return custom_orbs
+    if system not in ORB_CONFIGS:
+        system = 'Default'  # Fallback to the default system.
+    return ORB_CONFIGS[system]
+
+def set_default_orb_config(config):
+    """Set the default orb configuration to be used globally."""
+    global DEFAULT_ORB_CONFIG
+    DEFAULT_ORB_CONFIG = config
+
+# Initialize a default orb configuration on startup.
+DEFAULT_ORB_CONFIG = create_orb_config('Default') 

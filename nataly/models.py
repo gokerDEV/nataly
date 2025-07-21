@@ -3,12 +3,9 @@
 
 from dataclasses import dataclass
 from typing import Optional, Literal, List, Dict, Any
+from .constants import SIGNS, ZODIAC_SIGN_DEGREES
 
-# ZODIAC_SIGN_DEGREES is moved here to break the circular import with constants.py
-ZODIAC_SIGN_DEGREES = {
-    "Aries": 0, "Taurus": 30, "Gemini": 60, "Cancer": 90, "Leo": 120, "Virgo": 150,
-    "Libra": 180, "Scorpio": 210, "Sagittarius": 240, "Capricorn": 270, "Aquarius": 300, "Pisces": 330,
-}
+
 
 # --- Astrological Data Conversion Utilities ---
 
@@ -104,6 +101,14 @@ class Sign:
     polarity: str
     classic_ruler: str
     modern_ruler: Optional[str] = None
+
+
+def get_sign(sign_name: str) -> Optional[Sign]:
+    """Create a Sign object from a sign name using the canonical SIGNS dict from constants.py."""
+    data = SIGNS.get(sign_name)
+    if data:
+        return Sign(**data)
+    return None
 
 @dataclass
 class Body:

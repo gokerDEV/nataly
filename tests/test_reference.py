@@ -12,7 +12,7 @@ from typing import Dict, Any
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from nataly import NatalChart, create_orb_config
+from nataly import NatalChart
 from nataly.models import parse_longitude_to_decimal, parse_dms_to_decimal
 from references import PLANETS, HOUSES, ASPECTS, BIRTH_DATE, BIRTH_LOCATION_DETAILED
 

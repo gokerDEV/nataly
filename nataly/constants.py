@@ -1,177 +1,109 @@
 # nataly/constants.py
 # Contains static astrological data and rules for the library.
 
-from .models import Sign, OrbConfig
 import swisseph as swe
 from typing import Literal
 
-# --- TYPE DEFINITIONS ---
+# =====================
+# ZODIAC SIGNS
+# =====================
+SIGNS = {
+    "Aries":       {"name": "Aries",       "symbol": "♈", "element": "Fire",   "modality": "Cardinal", "polarity": "Positive", "classic_ruler": "Mars", "modern_ruler": "Mars"},
+    "Taurus":      {"name": "Taurus",      "symbol": "♉", "element": "Earth",  "modality": "Fixed",    "polarity": "Negative", "classic_ruler": "Venus", "modern_ruler": "Venus"},
+    "Gemini":      {"name": "Gemini",      "symbol": "♊", "element": "Air",    "modality": "Mutable",  "polarity": "Positive", "classic_ruler": "Mercury", "modern_ruler": "Mercury"},
+    "Cancer":      {"name": "Cancer",      "symbol": "♋", "element": "Water",  "modality": "Cardinal", "polarity": "Negative", "classic_ruler": "Moon", "modern_ruler": "Moon"},
+    "Leo":         {"name": "Leo",         "symbol": "♌", "element": "Fire",   "modality": "Fixed",    "polarity": "Positive", "classic_ruler": "Sun", "modern_ruler": "Sun"},
+    "Virgo":       {"name": "Virgo",       "symbol": "♍", "element": "Earth",  "modality": "Mutable",  "polarity": "Negative", "classic_ruler": "Mercury", "modern_ruler": "Mercury"},
+    "Libra":       {"name": "Libra",       "symbol": "♎", "element": "Air",    "modality": "Cardinal", "polarity": "Positive", "classic_ruler": "Venus", "modern_ruler": "Venus"},
+    "Scorpio":     {"name": "Scorpio",     "symbol": "♏", "element": "Water",  "modality": "Fixed",    "polarity": "Negative", "classic_ruler": "Mars", "modern_ruler": "Pluto"},
+    "Sagittarius": {"name": "Sagittarius", "symbol": "♐", "element": "Fire",   "modality": "Mutable",  "polarity": "Positive", "classic_ruler": "Jupiter", "modern_ruler": "Jupiter"},
+    "Capricorn":   {"name": "Capricorn",   "symbol": "♑", "element": "Earth",  "modality": "Cardinal", "polarity": "Negative", "classic_ruler": "Saturn", "modern_ruler": "Saturn"},
+    "Aquarius":    {"name": "Aquarius",    "symbol": "♒", "element": "Air",    "modality": "Fixed",    "polarity": "Positive", "classic_ruler": "Saturn", "modern_ruler": "Uranus"},
+    "Pisces":      {"name": "Pisces",      "symbol": "♓", "element": "Water",  "modality": "Mutable",  "polarity": "Negative", "classic_ruler": "Jupiter", "modern_ruler": "Neptune"},
+}
+
+# =====================
+# TYPE DEFINITIONS
+# =====================
 BODY_TYPES = Literal["Planet", "Asteroid", "Axis", "LunarNode", "Lilith", "Luminary"]
 
-# --- ZODIAC SIGNS ---
-SIGNS = {
-    "Aries":       Sign(name="Aries",       symbol="♈", element="Fire",   modality="Cardinal", polarity="Positive", classic_ruler="Mars", modern_ruler="Mars"),
-    "Taurus":      Sign(name="Taurus",      symbol="♉", element="Earth",  modality="Fixed",    polarity="Negative", classic_ruler="Venus", modern_ruler="Venus"),
-    "Gemini":      Sign(name="Gemini",      symbol="♊", element="Air",    modality="Mutable",  polarity="Positive", classic_ruler="Mercury", modern_ruler="Mercury"),
-    "Cancer":      Sign(name="Cancer",      symbol="♋", element="Water",  modality="Cardinal", polarity="Negative", classic_ruler="Moon", modern_ruler="Moon"),
-    "Leo":         Sign(name="Leo",         symbol="♌", element="Fire",   modality="Fixed",    polarity="Positive", classic_ruler="Sun", modern_ruler="Sun"),
-    "Virgo":       Sign(name="Virgo",       symbol="♍", element="Earth",  modality="Mutable",  polarity="Negative", classic_ruler="Mercury", modern_ruler="Mercury"),
-    "Libra":       Sign(name="Libra",       symbol="♎", element="Air",    modality="Cardinal", polarity="Positive", classic_ruler="Venus", modern_ruler="Venus"),
-    "Scorpio":     Sign(name="Scorpio",     symbol="♏", element="Water",  modality="Fixed",    polarity="Negative", classic_ruler="Mars", modern_ruler="Pluto"),
-    "Sagittarius": Sign(name="Sagittarius", symbol="♐", element="Fire",   modality="Mutable",  polarity="Positive", classic_ruler="Jupiter", modern_ruler="Jupiter"),
-    "Capricorn":   Sign(name="Capricorn",   symbol="♑", element="Earth",  modality="Cardinal", polarity="Negative", classic_ruler="Saturn", modern_ruler="Saturn"),
-    "Aquarius":    Sign(name="Aquarius",    symbol="♒", element="Air",    modality="Fixed",    polarity="Positive", classic_ruler="Saturn", modern_ruler="Uranus"),
-    "Pisces":      Sign(name="Pisces",      symbol="♓", element="Water",  modality="Mutable",  polarity="Negative", classic_ruler="Jupiter", modern_ruler="Neptune"),
+# =====================
+# ASTROLOGICAL BODY GROUPS
+# =====================
+# General Astrological Groups (for Semantic Filtering)
+# These groups are for general-purpose filtering and categorization based on astrological meaning.
+# They can be used to filter bodies in a user interface or for interpretive logic.
+ASTROLOGICAL_BODY_GROUPS = {
+    "luminaries": ["Sun", "Moon"],
+    "personal_planets": ["Mercury", "Venus", "Mars"],
+    "social_planets": ["Jupiter", "Saturn"],
+    "generational_planets": ["Uranus", "Neptune", "Pluto"],
+    "main_asteroids": ["Ceres", "Pallas", "Juno", "Vesta"],
+    "centaur_asteroids": ["Chiron"],
+    "lunar_nodes": ["True Node", "Mean Node", "South Node"],
+    "chart_angles": ["AC", "MC", "IC", "DC"],
+    "hypothetical_points": ["Lilith"],
+    "all_planets": [
+        "Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", 
+        "Uranus", "Neptune", "Pluto"
+    ],
+    "all_asteroids": ["Ceres", "Pallas", "Juno", "Vesta", "Chiron"],
 }
 
-# --- CELESTIAL BODY SYMBOLS ---
+# =====================
+# CELESTIAL BODY SYMBOLS
+# =====================
+LUMINARIES_SYMBOLS = {"Sun": "☉", "Moon": "☽"}
+PERSONAL_PLANETS_SYMBOLS = {"Mercury": "☿", "Venus": "♀", "Mars": "♂"}
+SOCIAL_PLANETS_SYMBOLS = {"Jupiter": "♃", "Saturn": "♄"}
+TRANSPERSONAL_PLANETS_SYMBOLS = {"Uranus": "♅", "Neptune": "♆", "Pluto": "♇"}
+ASTEROIDS_SYMBOLS = {"Ceres": "⚳", "Pallas": "⚴", "Juno": "⚵", "Vesta": "⚶", "Chiron": "⚷"}
+LUNAR_NODES_SYMBOLS = {"True Node": "☊", "South Node": "☋", "Mean Node": "☊"}
+LILITH_SYMBOLS = {"Lilith": "⚸"}
+ANGLES_SYMBOLS = {"AC": "AC", "MC": "MC", "IC": "IC", "DC": "DC"}
 
-# LUMINARIES - Most important celestial bodies
-LUMINARIES_SYMBOLS = {
-    "Sun": "☉",          # U+2609 - Sun
-    "Moon": "☽",         # U+263D - Moon
+# =====================
+# ORB-SPECIFIC GROUPS (for 5x5 Matrix)
+# =====================
+# These dictionaries provide consistent, named groups for filtering and configuration.
+
+# Orb-Specific Groups (for 5x5 Matrix)
+# These groups are designed to EXACTLY mirror the structure of the astro.com orb matrix.
+# They are the primary keys used in the ORB_CONFIGS dictionary.
+ORB_BODY_GROUPS = {
+    # Corresponds to rows for Sun (☉) and Moon (☽) in the astro.com orb matrix.
+    "orb_luminaries": ["Sun", "Moon"],
+    
+    # Corresponds to rows for Mercury (☿), Venus (♀), and Mars (♂).
+    "orb_personal": ["Mercury", "Venus", "Mars"],
+
+    # Corresponds to rows for Jupiter (♃) and Saturn (♄).
+    "orb_social": ["Jupiter", "Saturn"],
+
+    # Corresponds to rows for Uranus (♅), Neptune (♆), Pluto (♇), and Chiron (⚷).
+    "orb_transpersonal_chiron": ["Uranus", "Neptune", "Pluto", "Chiron"],
+
+    # Corresponds to rows for Ascendant (AC), Midheaven (MC), and Node (☊).
+    "orb_points": ["AC", "MC", "IC", "DC", "True Node", "Mean Node"],
+
+    # Fallback group for bodies not in the main matrix, like other asteroids and Lilith.
+    "orb_other_bodies": ["Ceres", "Pallas", "Juno", "Vesta", "Lilith"]
 }
 
-# MAJOR PLANETS - Classical and modern planets
-MAJOR_PLANETS_SYMBOLS = {
-    "Mercury": "☿",      # U+263F - Mercury
-    "Venus": "♀",        # U+2640 - Venus
-    "Mars": "♂",         # U+2642 - Mars
-    "Jupiter": "♃",      # U+2643 - Jupiter
-    "Saturn": "♄",       # U+2644 - Saturn
-    "Uranus": "♅",       # U+2645 - Uranus
-    "Neptune": "♆",      # U+2646 - Neptune
-    "Pluto": "♇",        # U+2647 - Pluto
+# =====================
+# ORB ASPECT GROUPS
+# =====================
+ORB_ASPECT_GROUPS = {
+    "major": ["Conjunction", "Opposition", "Square", "Trine"],
+    "sextile": ["Sextile"],
+    "adjustment": ["Semisextile", "Quincunx"],
+    "tension": ["Sesquiquadrate", "Semisquare"],
+    "creative": ["Quintile", "Biquintile"],
 }
 
-# ASTEROIDS - Minor planets
-ASTEROIDS_SYMBOLS = {
-    "Ceres": "⚳",        # U+26B3 - Ceres (1)
-    "Pallas": "⚴",       # U+26B4 - Pallas (2)
-    "Juno": "⚵",         # U+26B5 - Juno (3)
-    "Vesta": "⚶",        # U+26B6 - Vesta (4)
-    "Chiron": "⚷",       # U+26B7 - Chiron (2060)
-
-}
-
-# LUNAR NODES - Moon's orbital nodes
-LUNAR_NODES_SYMBOLS = {
-    "True Node": "☊",    # U+260A - North Node (True)
-    "South Node": "☋",   # U+260B - South Node
-    "Mean Node": "☊",    # U+260A - North Node (Mean)
-}
-
-# LILITH - Black Moon
-LILITH_SYMBOLS = {
-    "Lilith": "⚸",       # U+26B8 - Black Moon Lilith
-    "Black Moon": "⚸",   # U+26B8 - Black Moon (alternative name)
-}
-
-# ANGLES - Birth chart angles
-ANGLES_SYMBOLS = {
-    "AC": "AC",          # Ascendant
-    "MC": "MC",          # Midheaven
-    "IC": "IC",          # Imum Coeli
-    "DC": "DC",          # Descendant
-}
-
-# --- BODY TYPE MAPPINGS ---
-BODY_TYPE_MAPPINGS = {
-    # Luminaries
-    **{name: "Luminary" for name in LUMINARIES_SYMBOLS.keys()},
-    # Major Planets
-    **{name: "Planet" for name in MAJOR_PLANETS_SYMBOLS.keys()},
-    # Asteroids
-    **{name: "Asteroid" for name in ASTEROIDS_SYMBOLS.keys()},
-    # Lunar Nodes
-    **{name: "LunarNode" for name in LUNAR_NODES_SYMBOLS.keys()},
-    # Lilith
-    **{name: "Lilith" for name in LILITH_SYMBOLS.keys()},
-    # Angles
-    **{name: "Axis" for name in ANGLES_SYMBOLS.keys()},
-}
-
-# --- VALID BODY TYPES ---
-VALID_BODY_TYPES = list(set(BODY_TYPE_MAPPINGS.values()))
-
-# --- COMPLETE SYMBOL LIST ---
-BODY_SYMBOLS = {
-    # Luminaries
-    **LUMINARIES_SYMBOLS,
-    # Major Planets
-    **MAJOR_PLANETS_SYMBOLS,
-    # Asteroids
-    **ASTEROIDS_SYMBOLS,
-    # Lunar Nodes
-    **LUNAR_NODES_SYMBOLS,
-    # Lilith
-    **LILITH_SYMBOLS,
-    # Angles
-    **ANGLES_SYMBOLS,
-}
-
-# --- CATEGORIZED NAME LISTS ---
-
-# LUMINARIES
-LUMINARIES = list(LUMINARIES_SYMBOLS.keys())
-
-# MAJOR PLANETS
-MAJOR_PLANETS = list(MAJOR_PLANETS_SYMBOLS.keys())
-
-# ASTEROIDS
-ASTEROIDS = list(ASTEROIDS_SYMBOLS.keys())
-
-# LUNAR NODES
-LUNAR_NODES = list(LUNAR_NODES_SYMBOLS.keys())
-
-# LILITH
-LILITH_BODIES = list(LILITH_SYMBOLS.keys())
-
-# ANGLES
-ANGLES = list(ANGLES_SYMBOLS.keys())
-
-# ALL PLANETS (Luminaries + Major Planets)
-PLANETS = LUMINARIES + MAJOR_PLANETS
-
-# ALL CELESTIAL BODIES (Planets + Asteroids + Lunar Nodes + Lilith)
-ALL_BODIES = PLANETS + ASTEROIDS + LUNAR_NODES + LILITH_BODIES
-
-# ALL CELESTIAL BODIES + ANGLES
-ALL_BODY_NAMES = ALL_BODIES + ANGLES
-
-# --- BACKWARD COMPATIBILITY ---
-# Legacy code compatibility
-PLANET_SYMBOLS = {**LUMINARIES_SYMBOLS, **MAJOR_PLANETS_SYMBOLS, **ASTEROIDS_SYMBOLS, **LUNAR_NODES_SYMBOLS}
-PLANET_NAMES = list(PLANET_SYMBOLS.keys())
-AXES_NAMES = ANGLES
-
-SIGN_NAMES_BY_DEGREE = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"]
-
-# --- DIGNITY RULES ---
-DIGNITY_RULES = {
-    "domicile": {
-        "Sun": "Leo", "Moon": "Cancer", "Mercury": ["Gemini", "Virgo"], "Venus": ["Taurus", "Libra"],
-        "Mars": "Aries", "Jupiter": "Sagittarius", "Saturn": "Capricorn",
-        "Uranus": "Aquarius", "Neptune": "Pisces", "Pluto": "Scorpio"
-    },
-    "exaltation": {
-        "Sun": "Aries", "Moon": "Taurus", "Mercury": "Virgo", "Venus": "Pisces",
-        "Mars": "Capricorn", "Jupiter": "Cancer", "Saturn": "Libra",
-        "Uranus": "Scorpio", "Neptune": "Leo", "Pluto": "Aries"
-    },
-    "detriment": {
-        "Sun": "Aquarius", "Moon": "Capricorn", "Mercury": ["Sagittarius", "Pisces"],
-        "Venus": ["Scorpio", "Aries"], "Mars": "Libra", "Jupiter": "Gemini", "Saturn": "Cancer",
-        "Uranus": "Leo", "Neptune": "Virgo", "Pluto": "Taurus"
-    },
-    "fall": {
-        "Sun": "Libra", "Moon": "Scorpio", "Mercury": "Pisces", "Venus": "Virgo",
-        "Mars": "Cancer", "Jupiter": "Capricorn", "Saturn": "Aries",
-        "Uranus": "Taurus", "Neptune": "Aquarius", "Pluto": "Virgo"
-    }
-}
-
-# --- COMPLETE ASPECT DATA ---
+# =====================
+# ASPECT DATA
+# =====================
 ASPECT_DATA = {
     "Conjunction":    {"angle": 0,    "symbol": "☌"}, 
     "Opposition":     {"angle": 180,  "symbol": "☍"},
@@ -186,184 +118,142 @@ ASPECT_DATA = {
     "Biquintile":     {"angle": 144,  "symbol": "bQ"},
 }
 
-MAJOR_ASPECTS = ["Conjunction", "Opposition", "Square", "Trine"]
+# =====================
+# ZODIAC SIGN DEGREES
+# =====================
+ZODIAC_SIGN_DEGREES = {
+    "Aries": 0, "Taurus": 30, "Gemini": 60, "Cancer": 90, "Leo": 120, "Virgo": 150,
+    "Libra": 180, "Scorpio": 210, "Sagittarius": 240, "Capricorn": 270, "Aquarius": 300, "Pisces": 330,
+}
+
+# =====================
+# ORB CONFIGURATIONS (5x5 Matrix)
+# =====================
+# This structure mirrors the astro.com orb matrix for aspect calculations.
+# Orbs from Liz Greene, used as the default setting on astro.com (chart type 2.AT, 2.GW, etc.).
+ORB_CONFIGS = {
+    'Default': {
+        'orb_luminaries': {
+            'major': 10.0, 'sextile': 6.0, 'adjustment': 3.0, 'tension': 3.0, 'creative': 2.0
+        },
+        'orb_personal': {
+            'major': 10.0, 'sextile': 6.0, 'adjustment': 3.0, 'tension': 3.0, 'creative': 2.0
+        },
+        'orb_social': {
+            'major': 10.0, 'sextile': 6.0, 'adjustment': 3.0, 'tension': 3.0, 'creative': 2.0
+        },
+        'orb_transpersonal_chiron': {
+            'major': 10.0, 'sextile': 6.0, 'adjustment': 3.0, 'tension': 3.0, 'creative': 2.0
+        },
+        'orb_other_bodies': {
+            'major': 3.0,  'sextile': 2.0, 'adjustment': 1.5, 'tension': 1.5, 'creative': 1.0
+        },
+        'orb_points': {
+            'major': 0.0,  'sextile': 0.0, 'adjustment': 0.0, 'tension': 0.0, 'creative': 0.0
+        }
+    },
+    # Orbs from the 'Classical' setting on astro.com (chart type 2.A).
+    'Classical': {
+        'orb_luminaries': {
+            'major': 9.0, 'sextile': 5.0, 'adjustment': 3.0, 'tension': 1.5, 'creative': 1.0
+        },
+        'orb_personal': {
+            'major': 7.0, 'sextile': 5.0, 'adjustment': 3.0, 'tension': 1.5, 'creative': 1.0
+        },
+        'orb_social': {
+            'major': 9.0, 'sextile': 5.0, 'adjustment': 3.0, 'tension': 1.5, 'creative': 1.0
+        },
+        'orb_transpersonal_chiron': {
+            'major': 5.0, 'sextile': 5.0, 'adjustment': 3.0, 'tension': 1.5, 'creative': 1.0
+        },
+        'orb_other_bodies': {
+            'major': 2.0, 'sextile': 1.5, 'adjustment': 1.0, 'tension': 1.0, 'creative': 0.5
+        },
+        'orb_points': {
+            'major': 0.0, 'sextile': 0.0, 'adjustment': 0.0, 'tension': 0.0, 'creative': 0.0
+        }
+    }
+}
+
+# =====================
+# DERIVED LISTS AND MAPPINGS
+# =====================
+# Combine all symbol dictionaries into one master dictionary.
+BODY_SYMBOLS = {
+    **LUMINARIES_SYMBOLS, 
+    **PERSONAL_PLANETS_SYMBOLS, 
+    **SOCIAL_PLANETS_SYMBOLS,
+    **TRANSPERSONAL_PLANETS_SYMBOLS, 
+    **ASTEROIDS_SYMBOLS, 
+    **LUNAR_NODES_SYMBOLS,
+    **LILITH_SYMBOLS, 
+    **ANGLES_SYMBOLS
+}
+
+# List of all body names used in the system.
+ALL_BODY_NAMES = list(BODY_SYMBOLS.keys())
+
+# Map each body name to its astrological type.
+BODY_TYPE_MAPPINGS = {
+    **{name: "Luminary" for name in LUMINARIES_SYMBOLS.keys()},
+    **{name: "Planet" for name in {
+        **PERSONAL_PLANETS_SYMBOLS, 
+        **SOCIAL_PLANETS_SYMBOLS, 
+        **TRANSPERSONAL_PLANETS_SYMBOLS}.keys()
+    },
+    **{name: "Asteroid" for name in ASTEROIDS_SYMBOLS.keys()},
+    **{name: "LunarNode" for name in LUNAR_NODES_SYMBOLS.keys()},
+    **{name: "Lilith" for name in LILITH_SYMBOLS.keys()},
+    **{name: "Axis" for name in ANGLES_SYMBOLS.keys()},
+}
+VALID_BODY_TYPES = list(set(BODY_TYPE_MAPPINGS.values()))
+
+SIGN_NAMES_BY_DEGREE = [
+    "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", 
+    "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+]
+
+# =====================
+# DIGNITY RULES
+# =====================
+DIGNITY_RULES = {
+    "domicile": {
+        "Sun": "Leo", "Moon": "Cancer", "Mercury": ["Gemini", "Virgo"], "Venus": ["Taurus", "Libra"], 
+        "Mars": "Aries", "Jupiter": "Sagittarius", "Saturn": "Capricorn", "Uranus": "Aquarius", 
+        "Neptune": "Pisces", "Pluto": "Scorpio"
+    },
+    "exaltation": {
+        "Sun": "Aries", "Moon": "Taurus", "Mercury": "Virgo", "Venus": "Pisces", "Mars": "Capricorn", 
+        "Jupiter": "Cancer", "Saturn": "Libra", "Uranus": "Scorpio", "Neptune": "Leo", "Pluto": "Aries"
+    },
+    "detriment": {
+        "Sun": "Aquarius", "Moon": "Capricorn", "Mercury": ["Sagittarius", "Pisces"], 
+        "Venus": ["Scorpio", "Aries"], "Mars": "Libra", "Jupiter": "Gemini", "Saturn": "Cancer", 
+        "Uranus": "Leo", "Neptune": "Virgo", "Pluto": "Taurus"
+    },
+    "fall": {
+        "Sun": "Libra", "Moon": "Scorpio", "Mercury": "Pisces", "Venus": "Virgo", "Mars": "Cancer", 
+        "Jupiter": "Capricorn", "Saturn": "Aries", "Uranus": "Taurus", "Neptune": "Aquarius", 
+        "Pluto": "Virgo"
+    }
+}
 
 MODALITIES = ["Cardinal", "Fixed", "Mutable"]
 ELEMENTS = ["Fire", "Earth", "Air", "Water"]
 POLARITIES = ["Positive", "Negative"]
 
-# --- SWISS EPHEMERIS MAPPING ---
+# =====================
+# SWISS EPHEMERIS MAPPING
+# =====================
+# Mapping of body names to Swiss Ephemeris constants.
 # Based on Swiss Ephemeris documentation: https://www.astro.com/swisseph/swephprg.htm#_Toc112597363
 PLANET_MAPPING_SWE = {
-    # Luminaries
-    "Sun": swe.SUN,              # SE_SUN = 0
-    "Moon": swe.MOON,            # SE_MOON = 1
-    
-    # Major Planets
-    "Mercury": swe.MERCURY,      # SE_MERCURY = 2
-    "Venus": swe.VENUS,          # SE_VENUS = 3
-    "Mars": swe.MARS,            # SE_MARS = 4
-    "Jupiter": swe.JUPITER,      # SE_JUPITER = 5
-    "Saturn": swe.SATURN,        # SE_SATURN = 6
-    "Uranus": swe.URANUS,        # SE_URANUS = 7
-    "Neptune": swe.NEPTUNE,      # SE_NEPTUNE = 8
-    "Pluto": swe.PLUTO,          # SE_PLUTO = 9
-    
-    # Asteroids
-    "Ceres": 17, # swe.CERES
-    "Pallas": 18, # swe.PALLAS
-    "Juno": 19, # swe.JUNO
-    "Vesta": 20, # swe.VESTA
-    "Chiron": 15, # swe.CHIRON
-    # "Ceres": swe.CERES,          # SE_CERES = 10
-    # "Pallas": swe.PALLAS,        # SE_PALLAS = 11
-    # "Juno": swe.JUNO,            # SE_JUNO = 12
-    # "Vesta": swe.VESTA,          # SE_VESTA = 13
-    # "Chiron": swe.CHIRON,        # SE_CHIRON = 15
-    "Pholus": swe.PHOLUS,        # SE_PHOLUS = 16
-    
-    
-    # Lunar Nodes
-    "True Node": swe.TRUE_NODE,  # SE_TRUE_NODE = 11 (True Node)
-    "Mean Node": swe.MEAN_NODE,  # SE_MEAN_NODE = 10
-    
-    # Note: Eris is not available in standard Swiss Ephemeris
-    # Note: South Node is calculated as True Node + 180°
-    # Note: Lilith/Black Moon are calculated separately (not in Swiss Ephemeris)
-    # Note: Angles (AC, MC, IC, DC) are calculated separately
-    
-    # Angles (calculated separately, not from Swiss Ephemeris)
-    "AC": swe.ASC,               # Ascendant
-    "MC": swe.MC,                # Midheaven
-    "IC": None,                  # Imum Coeli (calculated as MC + 180°)
-    "DC": None,                  # Descendant (calculated as AC + 180°)
-    
-    # Additional bodies available in Swiss Ephemeris (optional)
-    "Earth": swe.EARTH,          # SE_EARTH = 14
-    "Mean Apogee": swe.MEAN_APOG, # SE_MEAN_APOG = 12
-    "Osculating Apogee": swe.OSCU_APOG, # SE_OSCU_APOG = 13
-    "Interpolated Apogee": swe.INTP_APOG, # SE_INTP_APOG = 21
-    "Interpolated Perigee": swe.INTP_PERG, # SE_INTP_PERG = 22
+    "Sun": swe.SUN, "Moon": swe.MOON, "Mercury": swe.MERCURY, 
+    "Venus": swe.VENUS, "Mars": swe.MARS, "Jupiter": swe.JUPITER, 
+    "Saturn": swe.SATURN, "Uranus": swe.URANUS, "Neptune": swe.NEPTUNE, 
+    "Pluto": swe.PLUTO, "Ceres": 17, "Pallas": 18, "Juno": 19, "Vesta": 20, 
+    "Chiron": 15, "Pholus": swe.PHOLUS, "True Node": swe.TRUE_NODE, 
+    "Mean Node": swe.MEAN_NODE, "AC": swe.ASC, "MC": swe.MC,
+    # Note: IC, DC, South Node, and Lilith are calculated programmatically, not directly fetched.
+    "IC": None, "DC": None, "South Node": None, "Lilith": None,
 }
-
-# --- ORB CONFIGURATIONS ---
-# Astrodienst's 5x5 matrix system with proper aspect names:
-# major_aspects = Conjunction, Opposition, Trine, Square
-# sextile = Sextile  
-# quincunx = Quincunx (150°)
-# minor_aspects = Sesquiquadrate, Semisquare, Semisextile (30°)
-# quintile_aspects = Quintile, Biquintile
-# 
-# NOTE: Astrodienst uses 3° for Quincunx and 1.5° for Semisextile (swapped!)
-
-ORB_CONFIGS = {
-    'Classical': {
-        'luminaries': {  # Sun, Moon
-            'major_aspects': 9.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 5.0,        # Sextile
-            'semisextile': 3.0,    # Semisextile (30°)
-            'minor_aspects': 1.5,  # Sesquiquadrate, Semisquare, Quincunx (150°)
-            'quintile_aspects': 1.0  # Quintile, Biquintile
-        },
-        'major_planets': {  # Mercury, Venus, Mars, Jupiter, Saturn
-            'major_aspects': 7.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 5.0,        # Sextile
-            'semisextile': 3.0,    # Semisextile (30°)
-            'minor_aspects': 1.5,  # Sesquiquadrate, Semisquare, Quincunx (150°)
-            'quintile_aspects': 1.0  # Quintile, Biquintile
-        },
-        'outer_planets': {  # Uranus, Neptune, Pluto
-            'major_aspects': 9.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 5.0,        # Sextile
-            'semisextile': 3.0,    # Semisextile (30°)
-            'minor_aspects': 1.5,  # Sesquiquadrate, Semisquare, Quincunx (150°)
-            'quintile_aspects': 1.0  # Quintile, Biquintile
-        },
-        'asteroids': {  # Chiron, etc.
-            'major_aspects': 5.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 5.0,        # Sextile
-            'semisextile': 3.0,    # Semisextile (30°)
-            'minor_aspects': 1.5,  # Sesquiquadrate, Semisquare, Quincunx (150°)
-            'quintile_aspects': 1.0  # Quintile, Biquintile
-        },
-        'angles': {  # AC, MC, IC, DC
-            'major_aspects': 0.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 0.0,        # Sextile
-            'semisextile': 0.0,    # Semisextile
-            'minor_aspects': 0.0,  # Sesquiquadrate, Semisquare, Quincunx
-            'quintile_aspects': 0.0  # Quintile, Biquintile
-        },
-    },
-    'Default': {
-        'luminaries': {  # Sun, Moon
-            'major_aspects': 10.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 6.0,         # Sextile
-            'semisextile': 3.0,     # Semisextile (30°)
-            'minor_aspects': 3.0,   # Sesquiquadrate, Semisquare, Quincunx (150°)
-            'quintile_aspects': 2.0  # Quintile, Biquintile
-        },
-        'major_planets': {  # Mercury, Venus, Mars, Jupiter, Saturn
-            'major_aspects': 10.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 6.0,         # Sextile
-            'semisextile': 3.0,     # Semisextile (30°)
-            'minor_aspects': 3.0,   # Sesquiquadrate, Semisquare, Quincunx (150°)
-            'quintile_aspects': 2.0  # Quintile, Biquintile
-        },
-        'outer_planets': {  # Uranus, Neptune, Pluto
-            'major_aspects': 10.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 6.0,         # Sextile
-            'semisextile': 3.0,     # Semisextile (30°)
-            'minor_aspects': 3.0,   # Sesquiquadrate, Semisquare, Quincunx (150°)
-            'quintile_aspects': 2.0  # Quintile, Biquintile
-        },
-        'asteroids': {  # Chiron, etc.
-            'major_aspects': 10.0,  # Conjunction, Opposition, Trine, Square
-            'sextile': 6.0,         # Sextile
-            'semisextile': 3.0,     # Semisextile (30°)
-            'minor_aspects': 3.0,   # Sesquiquadrate, Semisquare, Quincunx (150°)
-            'quintile_aspects': 2.0  # Quintile, Biquintile
-        },
-        'angles': {  # AC, MC, IC, DC
-            'major_aspects': 0.0,   # Conjunction, Opposition, Trine, Square
-            'sextile': 0.0,         # Sextile
-            'semisextile': 0.0,     # Semisextile
-            'minor_aspects': 0.0,   # Sesquiquadrate, Semisquare, Quincunx
-            'quintile_aspects': 0.0  # Quintile, Biquintile
-        }
-    }
-}
-
-# --- CONFIGURATION FUNCTIONS ---
-def create_orb_config(system: str = 'Default', custom_orbs: dict = None) -> OrbConfig:
-    """Create an OrbConfig object with specified system or custom orbs."""
-    if custom_orbs:
-        return OrbConfig.from_dict(custom_orbs)
-    
-    if system not in ORB_CONFIGS:
-        system = 'Classical'  # Default fallback
-    
-    return OrbConfig.from_dict(ORB_CONFIGS[system])
-
-def set_default_orb_config(config: OrbConfig):
-    """Set the default orb configuration globally."""
-    global DEFAULT_ORB_CONFIG
-    DEFAULT_ORB_CONFIG = config
-
-# Initialize default orb config
-DEFAULT_ORB_CONFIG = create_orb_config('Default') 
-
-# # ZODIAC SIGN DEGREE OFFSETS
-# ZODIAC_SIGN_DEGREES = {
-#     "Aries": 0,
-#     "Taurus": 30,
-#     "Gemini": 60,
-#     "Cancer": 90,
-#     "Leo": 120,
-#     "Virgo": 150,
-#     "Libra": 180,
-#     "Scorpio": 210,
-#     "Sagittarius": 240,
-#     "Capricorn": 270,
-#     "Aquarius": 300,
-#     "Pisces": 330,
-# } 

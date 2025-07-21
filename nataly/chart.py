@@ -7,10 +7,10 @@ from typing import List, Dict, Optional, Union, Any
 
 from .engine import AstroEngine
 from .constants import (
-    PLANET_NAMES, AXES_NAMES, MODALITIES, ELEMENTS, POLARITIES, 
-    create_orb_config, ALL_BODY_NAMES, BODY_TYPE_MAPPINGS, VALID_BODY_TYPES, BODY_TYPES
+     MODALITIES, ELEMENTS, 
+    ALL_BODY_NAMES, VALID_BODY_TYPES, BODY_TYPES
 )
-from .models import Body, House, Aspect, BodyFilter
+from .models import Body, BodyFilter
 
 class NatalChart:
     """
@@ -36,12 +36,15 @@ class NatalChart:
         self.longitude = lon
 
         engine = AstroEngine(orb_config, ephe_path)
+        self.axes_names = engine.axes_names
+        self.planets_names = ALL_BODY_NAMES
+        
         self.bodies_dict, self.houses = engine.get_planets_and_houses(dt_utc, lat, lon)
         # Calculate aspects between all celestial bodies
         self.aspects = engine.get_aspects(self.bodies_dict)
 
-        self.planets = [b for b in self.bodies_dict.values() if b.name in PLANET_NAMES]
-        self.axes = {b.name: b for b in self.bodies_dict.values() if b.name in AXES_NAMES}
+        self.planets = [b for b in self.bodies_dict.values() if b.name in self.planets_names]
+        self.axes = {b.name: b for b in self.bodies_dict.values() if b.name in self.axes_names}
         self.ascendant = self.axes.get("AC")
         self.midheaven = self.axes.get("MC")
 
@@ -63,7 +66,7 @@ class NatalChart:
                 self.element_distribution[body.sign.element]['bodies'].append(body)
                 self.modality_distribution[body.sign.modality]['bodies'].append(body)
                 self.polarity_distribution[body.sign.polarity]['bodies'].append(body)
-            if body.name not in AXES_NAMES:
+            if body.name not in self.axes_names:
                 if 1 <= body.house <= 3: self.quadrant_distribution['1st ◵']['bodies'].append(body)
                 elif 4 <= body.house <= 6: self.quadrant_distribution['2nd ◶']['bodies'].append(body)
                 elif 7 <= body.house <= 9: self.quadrant_distribution['3rd ◷']['bodies'].append(body)
@@ -84,7 +87,7 @@ class NatalChart:
             for el in ELEMENTS
         }
         # Use only 10 major planets for matrix (astrological standard)
-        planets_for_matrix = [b for b in self.planets if b.name in PLANET_NAMES]
+        planets_for_matrix = [b for b in self.planets if b.name in self.planets_names]
         
         for body in planets_for_matrix:
             if body and body.sign:
