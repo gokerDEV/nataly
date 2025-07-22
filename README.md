@@ -34,6 +34,43 @@ cd nataly
 pip install -e .
 ```
 
+### Ephemeris Files (Required for Asteroids)
+
+**Important:** For asteroid calculations (Ceres, Pallas, Juno, Vesta, Chiron), ephemeris files are required. The package automatically includes these files, but if you encounter issues:
+
+#### Manual Download (if needed):
+```bash
+# Create ephemeris directory
+mkdir -p ephe
+
+# Download asteroid ephemeris files
+curl -L -o ephe/seas_18.se1 https://www.astro.com/ftp/swisseph/ephe/seas_18.se1
+curl -L -o ephe/semo_18.se1 https://www.astro.com/ftp/swisseph/ephe/semo_18.se1
+curl -L -o ephe/semom18.se1 https://www.astro.com/ftp/swisseph/ephe/semom18.se1
+curl -L -o ephe/sepl_18.se1 https://www.astro.com/ftp/swisseph/ephe/sepl_18.se1
+curl -L -o ephe/seplm18.se1 https://www.astro.com/ftp/swisseph/ephe/seplm18.se1
+```
+
+#### Verify Installation:
+```python
+from nataly import NatalChart
+import datetime
+import pytz
+
+# Test chart with asteroids
+birth_dt = datetime.datetime(1990, 2, 27, 9, 15, tzinfo=pytz.UTC)
+chart = NatalChart(
+    person_name="Test",
+    dt_utc=birth_dt,
+    lat=38.25,
+    lon=27.09
+)
+
+# Check for asteroids
+asteroids = [body for body in chart.bodies_dict.values() if body.body_type == "Asteroid"]
+print(f"Found {len(asteroids)} asteroids: {[a.name for a in asteroids]}")
+```
+
 ## Quick Start
 
 ```python

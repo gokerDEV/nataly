@@ -143,8 +143,10 @@ class AstrologicalAnalyzer:
             engine = AstroEngine(orb_config=self.orb_config)
             aspects = engine.get_aspects(transit_chart.bodies_dict, natal_chart.bodies_dict)
         else:
-            # Use natal chart aspects
-            aspects = natal_chart.aspects
+            # Calculate aspects for natal chart including asteroids
+            from nataly import AstroEngine
+            engine = AstroEngine(orb_config=self.orb_config)
+            aspects = engine.get_aspects(natal_chart.bodies_dict, natal_chart.bodies_dict)
         
         for aspect in aspects:
             phase = "Applying" if aspect.is_applying else "Separating"

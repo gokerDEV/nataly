@@ -1,6 +1,7 @@
 # nataly/__init__.py
 # Main package initialization for the nataly astrology library.
 
+import os
 from .chart import NatalChart
 from .engine import AstroEngine
 from .models import Body, House, Aspect, Sign, BodyFilter, OrbConfig
@@ -15,10 +16,16 @@ from .config import NatalyConfig, get_config, set_ephe_path, get_ephe_path, crea
 from .layout import ChartLayout
 from .core import NatalyCore, example_function, process_data, create_core
 
-__version__ = "0.1.0"
+__version__ = "0.1.4"
 __author__ = "Göker"
 __email__ = "goker@goker.dev"
-__description__ = "A comprehensive astrology library for natal chart calculations and analysis"
+__description__ = "A comprehensive astrology library for natal chart calculations, analysis, and geometric chart layout extraction."
+
+# Automatically set ephemeris path to package directory
+_package_dir = os.path.dirname(__file__)
+_ephe_path = os.path.join(_package_dir, "ephe")
+if os.path.exists(_ephe_path):
+    set_ephe_path(_ephe_path)
 
 # Main exports
 __all__ = [
