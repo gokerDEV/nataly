@@ -7,8 +7,12 @@ import logging
 import tempfile
 from datetime import datetime
 from pathlib import Path
+import os
+import sys
 
 import pytest
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from nataly.utils import (
     create_directory,
@@ -20,6 +24,20 @@ from nataly.utils import (
     validate_data,
 )
 from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
+
+# === USER MUST SET THIS ===
+# Path to directory containing Swiss Ephemeris .se1 files (e.g. seas_18.se1, sepl_18.se1, ...)
+ephe_path = "./ephe"
+
+# Check ephemeris directory and files
+required_files = [
+    "seas_18.se1", "sepl_18.se1", "semo_18.se1", "seplm18.se1", "semom18.se1"
+]
+if not os.path.isdir(ephe_path):
+    raise RuntimeError(f"Ephemeris directory not found: {ephe_path}")
+missing = [f for f in required_files if not os.path.isfile(os.path.join(ephe_path, f))]
+if missing:
+    raise RuntimeError(f"Missing ephemeris files in {ephe_path}: {missing}\nPlease download from https://www.astro.com/ftp/swisseph/ephe/")
 
 
 class TestLogging:

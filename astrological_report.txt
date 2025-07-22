@@ -1,0 +1,277 @@
+================================================================================
+ASTROLOGICAL CHART ANALYSIS REPORT
+================================================================================
+
+CHART INFORMATION
+----------------------------------------
+Natal Chart: Joe Doe
+Date/Time: 1990-02-27 07:15:00 UTC
+Location: 38.25°N, 27.09°E
+
+Transit Chart: Current Transit
+Date/Time: 2025-07-22 11:23:09 UTC
+Location: 38.25°N, 27.09°E
+
+CELESTIAL BODIES
+----------------------------------------
++------------+-----------+-------------+-------+------------+
+| Body       | Type      | Sign        | House | Dignity    |
++------------+-----------+-------------+-------+------------+
+| Sun        | Luminary  | ♓ Pisces    | 11    | -          |
+| Moon       | Luminary  | ♈ Aries     | 12    | -          |
+| Mercury    | Planet    | ♒ Aquarius  | 11    | -          |
+| Venus      | Planet    | ♑ Capricorn | 10    | -          |
+| Mars       | Planet    | ♑ Capricorn | 9     | exaltation |
+| Jupiter    | Planet    | ♋ Cancer    | 3     | exaltation |
+| Saturn     | Planet    | ♑ Capricorn | 10    | domicile   |
+| Uranus     | Planet    | ♑ Capricorn | 9     | -          |
+| Neptune    | Planet    | ♑ Capricorn | 9     | -          |
+| Pluto      | Planet    | ♏ Scorpio   | 7     | domicile   |
+| Ceres      | Asteroid  | ♊ Gemini    | 2     | -          |
+| Pallas     | Asteroid  | ♈ Aries     | 12    | -          |
+| Juno       | Asteroid  | ♏ Scorpio   | 7     | -          |
+| Vesta      | Asteroid  | ♓ Pisces    | 11    | -          |
+| Chiron     | Asteroid  | ♋ Cancer    | 3     | -          |
+| True Node  | LunarNode | ♒ Aquarius  | 11    | -          |
+| South Node | LunarNode | ♌ Leo       | 5     | -          |
+| Mean Node  | LunarNode | ♒ Aquarius  | 10    | -          |
+| AC         | Axis      | ♉ Taurus    | 1     | -          |
+| MC         | Axis      | ♑ Capricorn | 10    | -          |
+| IC         | Axis      | ♋ Cancer    | 4     | -          |
+| DC         | Axis      | ♏ Scorpio   | 7     | -          |
++------------+-----------+-------------+-------+------------+
+
+PLANETS ONLY
+----------------------------------------
++---------+----------+-------------+-------+------------+
+| Body    | Type     | Sign        | House | Dignity    |
++---------+----------+-------------+-------+------------+
+| Sun     | Luminary | ♓ Pisces    | 11    | -          |
+| Moon    | Luminary | ♈ Aries     | 12    | -          |
+| Mercury | Planet   | ♒ Aquarius  | 11    | -          |
+| Venus   | Planet   | ♑ Capricorn | 10    | -          |
+| Mars    | Planet   | ♑ Capricorn | 9     | exaltation |
+| Jupiter | Planet   | ♋ Cancer    | 3     | exaltation |
+| Saturn  | Planet   | ♑ Capricorn | 10    | domicile   |
+| Uranus  | Planet   | ♑ Capricorn | 9     | -          |
+| Neptune | Planet   | ♑ Capricorn | 9     | -          |
+| Pluto   | Planet   | ♏ Scorpio   | 7     | domicile   |
++---------+----------+-------------+-------+------------+
+
+HOUSES
+----------------------------------------
++-------+---------------+-----------+---------------+--------------+
+| House | Sign          | Cusp      | Classic Ruler | Modern Ruler |
++-------+---------------+-----------+---------------+--------------+
+| 1     | ♉ Taurus      | 5°55'36"  | Venus         | Venus        |
+| 2     | ♊ Gemini      | 6°33'46"  | Mercury       | Mercury      |
+| 3     | ♊ Gemini      | 29°25'16" | Mercury       | Mercury      |
+| 4     | ♋ Cancer      | 21°00'07" | Moon          | Moon         |
+| 5     | ♌ Leo         | 15°52'01" | Sun           | Sun          |
+| 6     | ♍ Virgo       | 19°44'00" | Mercury       | Mercury      |
+| 7     | ♏ Scorpio     | 5°55'36"  | Mars          | Pluto        |
+| 8     | ♐ Sagittarius | 6°33'46"  | Jupiter       | Jupiter      |
+| 9     | ♐ Sagittarius | 29°25'16" | Jupiter       | Jupiter      |
+| 10    | ♑ Capricorn   | 21°00'07" | Saturn        | Saturn       |
+| 11    | ♒ Aquarius    | 15°52'01" | Saturn        | Uranus       |
+| 12    | ♓ Pisces      | 19°44'00" | Jupiter       | Neptune      |
++-------+---------------+-----------+---------------+--------------+
+
+ASPECTS
+----------------------------------------
++---------+------------------+------------+------------+-----------+
+| Body1   | Aspect           | Body2      | Phase      | Orb       |
++---------+------------------+------------+------------+-----------+
+| Sun     | △ Trine          | Moon       | Applying   | -4°18'14" |
+| Sun     | ☍ Opposition     | Venus      | Applying   | -2°46'00" |
+| Sun     | ☍ Opposition     | Mars       | Applying   | -9°01'37" |
+| Sun     | ⚻ Semisextile    | Jupiter    | Applying   | -0°54'08" |
+| Sun     | ☍ Opposition     | Saturn     | Applying   | -7°57'23" |
+| Sun     | □ Square         | Pallas     | Separating | 9°23'21"  |
+| Sun     | △ Trine          | Juno       | Applying   | -5°19'43" |
+| Sun     | ⚼ Sesquiquadrate | Vesta      | Applying   | -0°20'14" |
+| Sun     | □ Square         | AC         | Applying   | -6°00'38" |
+| Sun     | ☍ Opposition     | MC         | Applying   | -8°54'50" |
+| Sun     | ☌ Conjunction    | IC         | Separating | 8°54'50"  |
+| Sun     | □ Square         | DC         | Separating | 6°00'38"  |
+| Moon    | △ Trine          | Mercury    | Separating | 6°40'43"  |
+| Moon    | ⚺ Quincunx       | Venus      | Separating | 2°13'19"  |
+| Moon    | ☌ Conjunction    | Jupiter    | Separating | 1°26'49"  |
+| Moon    | ☍ Opposition     | Uranus     | Applying   | -9°20'38" |
+| Moon    | ☌ Conjunction    | Ceres      | Separating | 6°35'00"  |
+| Moon    | bQ Biquintile    | Juno       | Separating | 1°12'57"  |
+| Moon    | ⚼ Sesquiquadrate | True Node  | Applying   | -2°01'08" |
+| Moon    | ∠ Semisquare     | South Node | Separating | 2°01'08"  |
+| Moon    | ⚼ Sesquiquadrate | Mean Node  | Applying   | -1°03'21" |
+| Moon    | △ Trine          | DC         | Separating | 6°33'19"  |
+| Mercury | ∠ Semisquare     | Jupiter    | Applying   | -0°58'58" |
+| Mercury | bQ Biquintile    | Uranus     | Applying   | -0°07'12" |
+| Mercury | ⚺ Quincunx       | Neptune    | Applying   | -0°53'15" |
+| Mercury | □ Square         | Pluto      | Separating | 2°55'57"  |
+| Mercury | △ Trine          | Pallas     | Applying   | -5°41'28" |
+| Mercury | □ Square         | Juno       | Separating | 9°45'06"  |
+| Mercury | ⚺ Quincunx       | Vesta      | Applying   | -0°25'04" |
+| Mercury | ☍ Opposition     | True Node  | Applying   | -1°33'17" |
+| Mercury | ☌ Conjunction    | South Node | Separating | 1°33'17"  |
+| Mercury | ☍ Opposition     | Mean Node  | Applying   | -0°35'30" |
+| Mercury | □ Square         | AC         | Separating | 8°54'31"  |
+| Mercury | □ Square         | DC         | Applying   | -8°54'31" |
+| Venus   | ⚺ Quincunx       | Mars       | Applying   | -0°52'27" |
+| Venus   | ⚺ Quincunx       | Saturn     | Applying   | -1°56'40" |
+| Venus   | ⚺ Quincunx       | Pluto      | Applying   | -2°14'48" |
+| Venus   | ☌ Conjunction    | Ceres      | Separating | 2°46'22"  |
+| Venus   | ⚹ Sextile        | Pallas     | Applying   | -0°30'43" |
+| Venus   | □ Square         | Vesta      | Separating | 4°45'40"  |
+| Venus   | △ Trine          | True Node  | Separating | 3°37'27"  |
+| Venus   | ⚹ Sextile        | South Node | Applying   | -3°37'27" |
+| Venus   | △ Trine          | Mean Node  | Separating | 4°35'14"  |
+| Venus   | ∠ Semisquare     | AC         | Applying   | -0°54'43" |
+| Venus   | ⚺ Quincunx       | MC         | Applying   | -0°59'14" |
+| Venus   | ⚻ Semisextile    | IC         | Separating | 0°59'14"  |
+| Venus   | ⚼ Sesquiquadrate | DC         | Separating | 0°54'43"  |
+| Mars    | △ Trine          | Saturn     | Separating | 1°28'30"  |
+| Mars    | △ Trine          | Neptune    | Applying   | -6°32'11" |
+| Mars    | ⚹ Sextile        | Pluto      | Applying   | -2°42'58" |
+| Mars    | □ Square         | Ceres      | Applying   | -2°18'12" |
+| Mars    | ⚺ Quincunx       | Pallas     | Applying   | -0°02'32" |
+| Mars    | ⚹ Sextile        | Juno       | Separating | 4°06'10"  |
+| Mars    | ☍ Opposition     | Vesta      | Applying   | -5°13'51" |
+| Mars    | bQ Biquintile    | True Node  | Separating | 1°54'21"  |
+| Mars    | bQ Biquintile    | Mean Node  | Separating | 0°56'34"  |
+| Mars    | ⚼ Sesquiquadrate | AC         | Applying   | -0°26'32" |
+| Mars    | △ Trine          | MC         | Separating | 0°31'03"  |
+| Mars    | ⚹ Sextile        | IC         | Applying   | -0°31'03" |
+| Mars    | ∠ Semisquare     | DC         | Separating | 0°26'32"  |
+| Jupiter | ☍ Opposition     | Uranus     | Applying   | -0°55'38" |
+| Jupiter | ☍ Opposition     | Neptune    | Applying   | -4°18'19" |
+| Jupiter | △ Trine          | Pluto      | Separating | 8°07'31"  |
+| Jupiter | ⚼ Sesquiquadrate | Juno       | Applying   | -0°03'19" |
+| Jupiter | △ Trine          | Vesta      | Applying   | -5°36'39" |
+| Jupiter | ☌ Conjunction    | Chiron     | Separating | 1°07'00"  |
+| Jupiter | bQ Biquintile    | True Node  | Applying   | -0°44'52" |
+| Jupiter | bQ Biquintile    | Mean Node  | Separating | 0°12'54"  |
+| Jupiter | ⚹ Sextile        | AC         | Separating | 3°42'56"  |
+| Jupiter | △ Trine          | DC         | Applying   | -3°42'56" |
+| Saturn  | □ Square         | Uranus     | Applying   | -6°51'13" |
+| Saturn  | ⚼ Sesquiquadrate | Pluto      | Applying   | -0°54'22" |
+| Saturn  | □ Square         | Ceres      | Applying   | -9°04'26" |
+| Saturn  | △ Trine          | Juno       | Separating | 7°16'28"  |
+| Saturn  | □ Square         | Chiron     | Separating | 8°53'52"  |
+| Saturn  | ∠ Semisquare     | True Node  | Separating | 0°28'16"  |
+| Saturn  | ⚼ Sesquiquadrate | South Node | Applying   | -0°28'16" |
+| Saturn  | ∠ Semisquare     | Mean Node  | Separating | 1°26'03"  |
+| Saturn  | Q Quintile       | MC         | Applying   | -1°08'25" |
+| Saturn  | bQ Biquintile    | DC         | Separating | 1°56'05"  |
+| Uranus  | ⚼ Sesquiquadrate | Neptune    | Separating | 1°39'49"  |
+| Uranus  | ☍ Opposition     | Juno       | Applying   | -6°01'28" |
+| Uranus  | △ Trine          | MC         | Separating | 9°36'35"  |
+| Neptune | ⚼ Sesquiquadrate | Pluto      | Applying   | -0°40'28" |
+| Neptune | □ Square         | Ceres      | Applying   | -9°18'20" |
+| Neptune | △ Trine          | Juno       | Separating | 7°30'22"  |
+| Neptune | □ Square         | Chiron     | Separating | 8°39'57"  |
+| Neptune | ∠ Semisquare     | True Node  | Separating | 0°42'10"  |
+| Neptune | ⚼ Sesquiquadrate | South Node | Applying   | -0°42'10" |
+| Neptune | ∠ Semisquare     | Mean Node  | Separating | 1°39'58"  |
+| Neptune | Q Quintile       | MC         | Applying   | -0°54'30" |
+| Pluto   | ∠ Semisquare     | Vesta      | Applying   | -2°24'07" |
+| Pluto   | □ Square         | AC         | Separating | 3°16'16"  |
+| Pluto   | □ Square         | DC         | Applying   | -3°16'16" |
+| Ceres   | ⚻ Semisextile    | Vesta      | Separating | 0°21'50"  |
+| Ceres   | □ Square         | Chiron     | Applying   | -4°51'29" |
+| Ceres   | △ Trine          | South Node | Separating | 0°46'22"  |
+| Juno    | △ Trine          | Vesta      | Applying   | -1°18'59" |
+| Juno    | △ Trine          | Chiron     | Separating | 5°48'38"  |
+| Juno    | □ Square         | South Node | Separating | 0°10'46"  |
+| Vesta   | △ Trine          | Chiron     | Applying   | -0°08'50" |
+| Chiron  | Q Quintile       | True Node  | Applying   | -1°15'26" |
+| Chiron  | Q Quintile       | Mean Node  | Applying   | -0°17'39" |
+| Chiron  | ☌ Conjunction    | AC         | Separating | 8°47'37"  |
+| Chiron  | □ Square         | MC         | Separating | 6°07'52"  |
+| Chiron  | □ Square         | IC         | Applying   | -6°07'52" |
+| Chiron  | ☍ Opposition     | DC         | Applying   | -8°47'37" |
++---------+------------------+------------+------------+-----------+
+
+ELEMENT DISTRIBUTION
+----------------------------------------
++----------+-----+--------------------------------------------------+
+| Category | Sum | Bodies                                           |
++----------+-----+--------------------------------------------------+
+| Water    | 8   | Sun, Jupiter, Pluto, Juno, Vesta, Chiron, IC, DC |
+| Fire     | 3   | Moon, Pallas, South Node                         |
+| Air      | 4   | Mercury, Ceres, True Node, Mean Node             |
+| Earth    | 8   | Venus, Mars, Saturn, Uranus, Neptune, AC, MC, AC |
++----------+-----+--------------------------------------------------+
+
+MODALITY DISTRIBUTION
+----------------------------------------
++----------+-----+-----------------------------------------------------------------------------+
+| Category | Sum | Bodies                                                                      |
++----------+-----+-----------------------------------------------------------------------------+
+| Mutable  | 3   | Sun, Ceres, Vesta                                                           |
+| Cardinal | 11  | Moon, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pallas, Chiron, MC, IC |
+| Fixed    | 9   | Mercury, Pluto, Juno, True Node, South Node, Mean Node, AC, DC, AC          |
++----------+-----+-----------------------------------------------------------------------------+
+
+POLARITY DISTRIBUTION
+----------------------------------------
++----------+-----+----------------------------------------------------------------------------------------------------+
+| Category | Sum | Bodies                                                                                             |
++----------+-----+----------------------------------------------------------------------------------------------------+
+| Negative | 16  | Sun, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto, Juno, Vesta, Chiron, AC, MC, IC, DC, AC |
+| Positive | 7   | Moon, Mercury, Ceres, Pallas, True Node, South Node, Mean Node                                     |
++----------+-----+----------------------------------------------------------------------------------------------------+
+
+QUADRANT DISTRIBUTION
+----------------------------------------
++----------+-----+------------------------------------------------------------------------+
+| Category | Sum | Bodies                                                                 |
++----------+-----+------------------------------------------------------------------------+
+| 4th ◴    | 9   | Sun, Moon, Mercury, Venus, Saturn, Pallas, Vesta, True Node, Mean Node |
+| 3rd ◷    | 5   | Mars, Uranus, Neptune, Pluto, Juno                                     |
+| 1st ◵    | 3   | Jupiter, Ceres, Chiron                                                 |
+| 2nd ◶    | 1   | South Node                                                             |
++----------+-----+------------------------------------------------------------------------+
+
+HEMISPHERE DISTRIBUTION
+----------------------------------------
++----------+-----+------------------------------------------------------------------------------------------------------------+
+| Category | Sum | Bodies                                                                                                     |
++----------+-----+------------------------------------------------------------------------------------------------------------+
+| East ←   | 12  | Sun, Moon, Mercury, Venus, Jupiter, Saturn, Ceres, Pallas, Vesta, Chiron, True Node, Mean Node             |
+| South ↑  | 14  | Sun, Moon, Mercury, Venus, Mars, Saturn, Uranus, Neptune, Pluto, Pallas, Juno, Vesta, True Node, Mean Node |
+| West →   | 6   | Mars, Uranus, Neptune, Pluto, Juno, South Node                                                             |
+| North ↓  | 4   | Jupiter, Ceres, Chiron, South Node                                                                         |
++----------+-----+------------------------------------------------------------------------------------------------------------+
+
+TRANSIT ASPECTS CROSS REFERENCE
+----------------------------------------
++------------+-------------+-------------+--------------+-------------+-------------+--------------+-------------+-------------+-------------+-------------+-------------+--------+-------------+-------------+-------------+-----------+------------+-----------+----+----+----+----+
+| Transit    | Sun         | Moon        | Mercury      | Venus       | Mars        | Jupiter      | Saturn      | Uranus      | Neptune     | Pluto       | Ceres       | Pallas | Juno        | Vesta       | Chiron      | True Node | South Node | Mean Node | AC | MC | IC | DC |
++------------+-------------+-------------+--------------+-------------+-------------+--------------+-------------+-------------+-------------+-------------+-------------+--------+-------------+-------------+-------------+-----------+------------+-----------+----+----+----+----+
+| Sun        | -           | -           | -            | -           | -           | -            | -           | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Moon       | △ -4°18'14" | -           | -            | -           | -           | -            | -           | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Mercury    | -           | △ 6°40'43"  | -            | -           | -           | -            | -           | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Venus      | ☍ -2°46'00" | ⚺ 2°13'19"  | -            | -           | -           | -            | -           | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Mars       | ☍ -9°01'37" | -           | -            | ⚺ -0°52'27" | -           | -            | -           | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Jupiter    | ⚻ -0°54'08" | ☌ 1°26'49"  | ∠ -0°58'58"  | -           | -           | -            | -           | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Saturn     | ☍ -7°57'23" | -           | -            | ⚺ -1°56'40" | △ 1°28'30"  | -            | -           | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Uranus     | -           | ☍ -9°20'38" | bQ -0°07'12" | -           | -           | ☍ -0°55'38"  | □ -6°51'13" | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Neptune    | -           | -           | ⚺ -0°53'15"  | -           | △ -6°32'11" | ☍ -4°18'19"  | -           | ⚼ 1°39'49"  | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Pluto      | -           | -           | □ 2°55'57"   | ⚺ -2°14'48" | ⚹ -2°42'58" | △ 8°07'31"   | ⚼ -0°54'22" | -           | ⚼ -0°40'28" | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Ceres      | -           | ☌ 6°35'00"  | -            | ☌ 2°46'22"  | □ -2°18'12" | -            | □ -9°04'26" | -           | □ -9°18'20" | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Pallas     | □ 9°23'21"  | -           | △ -5°41'28"  | ⚹ -0°30'43" | ⚺ -0°02'32" | -            | -           | -           | -           | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Juno       | △ -5°19'43" | bQ 1°12'57" | □ 9°45'06"   | -           | ⚹ 4°06'10"  | ⚼ -0°03'19"  | △ 7°16'28"  | ☍ -6°01'28" | △ 7°30'22"  | -           | -           | -      | -           | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Vesta      | ⚼ -0°20'14" | -           | ⚺ -0°25'04"  | □ 4°45'40"  | ☍ -5°13'51" | △ -5°36'39"  | -           | -           | -           | ∠ -2°24'07" | ⚻ 0°21'50"  | -      | △ -1°18'59" | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Chiron     | -           | -           | -            | -           | -           | ☌ 1°07'00"   | □ 8°53'52"  | -           | □ 8°39'57"  | -           | □ -4°51'29" | -      | △ 5°48'38"  | △ -0°08'50" | -           | -         | -          | -         | -  | -  | -  | -  |
+| True Node  | -           | ⚼ -2°01'08" | ☍ -1°33'17"  | △ 3°37'27"  | bQ 1°54'21" | bQ -0°44'52" | ∠ 0°28'16"  | -           | ∠ 0°42'10"  | -           | -           | -      | -           | -           | Q -1°15'26" | -         | -          | -         | -  | -  | -  | -  |
+| South Node | -           | ∠ 2°01'08"  | ☌ 1°33'17"   | ⚹ -3°37'27" | -           | -            | ⚼ -0°28'16" | -           | ⚼ -0°42'10" | -           | △ 0°46'22"  | -      | □ 0°10'46"  | -           | -           | -         | -          | -         | -  | -  | -  | -  |
+| Mean Node  | -           | ⚼ -1°03'21" | ☍ -0°35'30"  | △ 4°35'14"  | bQ 0°56'34" | bQ 0°12'54"  | ∠ 1°26'03"  | -           | ∠ 1°39'58"  | -           | -           | -      | -           | -           | Q -0°17'39" | -         | -          | -         | -  | -  | -  | -  |
+| AC         | □ -6°00'38" | -           | □ 8°54'31"   | ∠ -0°54'43" | ⚼ -0°26'32" | ⚹ 3°42'56"   | -           | -           | -           | □ 3°16'16"  | -           | -      | -           | -           | ☌ 8°47'37"  | -         | -          | -         | -  | -  | -  | -  |
+| MC         | ☍ -8°54'50" | -           | -            | ⚺ -0°59'14" | △ 0°31'03"  | -            | Q -1°08'25" | △ 9°36'35"  | Q -0°54'30" | -           | -           | -      | -           | -           | □ 6°07'52"  | -         | -          | -         | -  | -  | -  | -  |
+| IC         | ☌ 8°54'50"  | -           | -            | ⚻ 0°59'14"  | ⚹ -0°31'03" | -            | -           | -           | -           | -           | -           | -      | -           | -           | □ -6°07'52" | -         | -          | -         | -  | -  | -  | -  |
+| DC         | □ 6°00'38"  | △ 6°33'19"  | □ -8°54'31"  | ⚼ 0°54'43"  | ∠ 0°26'32"  | △ -3°42'56"  | bQ 1°56'05" | -           | -           | □ -3°16'16" | -           | -      | -           | -           | ☍ -8°47'37" | -         | -          | -         | -  | -  | -  | -  |
++------------+-------------+-------------+--------------+-------------+-------------+--------------+-------------+-------------+-------------+-------------+-------------+--------+-------------+-------------+-------------+-----------+------------+-----------+----+----+----+----+
+
+================================================================================
+Report generated by Nataly Astrological Library
+================================================================================

@@ -9,6 +9,23 @@ from nataly import NatalyCore, example_function, process_data
 from nataly.utils import save_to_json, load_from_json, format_timestamp
 from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
 
+import datetime
+import os
+from nataly import NatalChart, create_orb_config, to_utc
+
+# === USER MUST SET THIS ===
+# Path to directory containing Swiss Ephemeris .se1 files (e.g. seas_18.se1, sepl_18.se1, ...)
+ephe_path = "/Users/goker/codes/nataly/ephe"  # <-- SET THIS TO YOUR EPHEMERIS DIRECTORY
+
+# Check ephemeris directory and files
+required_files = [
+    "seas_18.se1", "sepl_18.se1", "semo_18.se1", "seplm18.se1", "semom18.se1"
+]
+if not os.path.isdir(ephe_path):
+    raise RuntimeError(f"Ephemeris directory not found: {ephe_path}")
+missing = [f for f in required_files if not os.path.isfile(os.path.join(ephe_path, f))]
+if missing:
+    raise RuntimeError(f"Missing ephemeris files in {ephe_path}: {missing}\nPlease download from https://www.astro.com/ftp/swisseph/ephe/")
 
 def main():
     """Main function demonstrating Nataly library usage."""
@@ -86,24 +103,29 @@ def main():
     # 6. Natal chart layout example
     print("\n6. Natal Chart Layout Example:")
     try:
-        import datetime
-        import pytz
-        from nataly import NatalChart, ChartLayout
-        # Example birth data
-        birth_dt = datetime.datetime(1990, 2, 27, 9, 15, tzinfo=pytz.UTC)
+        name = "Joe Doe"
+        dob = '1990-02-27 09:15'
+        tz_offset = '+02:00'
+        latitude = 38.4192
+        longitude = 27.1287
+        birth_dt_utc = to_utc(dob, tz_offset)
         chart = NatalChart(
-            person_name="Joe Doe",
-            dt_utc=birth_dt,
-            lat=38.4192,  # Izmir, Turkey
-            lon=27.1287
+            person_name=name,
+            dt_utc=birth_dt_utc,
+            lat=latitude,
+            lon=longitude,
+            orb_config=create_orb_config('Placidus'),
+            ephe_path=ephe_path
         )
-        layout = ChartLayout(chart)
-        layout_data = layout.get_data()
-        print("   Chart layout data (truncated):")
-        print(f"   Center: {layout_data['center']}, Radius: {layout_data['radius']}")
-        print(f"   Houses: {layout_data['natal']['houses'][:2]} ...")
-        print(f"   Bodies: {layout_data['natal']['bodies'][:2]} ...")
-        print(f"   Aspects: {layout_data['natal']['aspects'][:2]} ...")
+        # Get planetary positions
+        sun = chart.get_body_by_name("Sun")
+        print(f"Sun: {sun.signed_dms} in House {sun.house}")
+        # Get aspects
+        for aspect in chart.aspects:
+            print(f"{aspect.body1.name} {aspect.symbol} {aspect.body2.name} (orb: {aspect.orb_str})")
+        # Get distributions
+        print("Element distribution:", chart.element_distribution)
+        print("Modality distribution:", chart.modality_distribution)
     except Exception as e:
         print(f"   [Error] Could not generate chart layout: {e}")
 

@@ -14,10 +14,24 @@ for planetary positions.
 """
 
 import datetime
-import pytz
+import os
 from typing import Dict, List, Optional, Tuple
-from nataly import NatalChart, create_orb_config, BodyFilter
+from nataly import NatalChart, create_orb_config, BodyFilter, to_utc
 from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS
+
+# === USER MUST SET THIS ===
+# Path to directory containing Swiss Ephemeris .se1 files (e.g. seas_18.se1, sepl_18.se1, ...)
+ephe_path = "/Users/goker/codes/nataly/ephe"  # <-- SET THIS TO YOUR EPHEMERIS DIRECTORY
+
+# Check ephemeris directory and files
+required_files = [
+    "seas_18.se1", "sepl_18.se1", "semo_18.se1", "seplm18.se1", "semom18.se1"
+]
+if not os.path.isdir(ephe_path):
+    raise RuntimeError(f"Ephemeris directory not found: {ephe_path}")
+missing = [f for f in required_files if not os.path.isfile(os.path.join(ephe_path, f))]
+if missing:
+    raise RuntimeError(f"Missing ephemeris files in {ephe_path}: {missing}\nPlease download from https://www.astro.com/ftp/swisseph/ephe/")
 
 class AstrologicalAnalyzer:
     """
@@ -45,18 +59,9 @@ class AstrologicalAnalyzer:
         Returns:
             Tuple of (name, utc_datetime)
         """
-        # Parse date and time
-        date_obj = datetime.datetime.strptime(birth_date, '%Y-%m-%d')
-        time_obj = datetime.datetime.strptime(birth_time, '%H:%M').time()
-        
-        # Combine date and time
-        local_datetime = datetime.datetime.combine(date_obj.date(), time_obj)
-        
-        # Convert to UTC
-        local_tz = pytz.timezone(timezone)
-        local_datetime = local_tz.localize(local_datetime)
-        utc_datetime = local_datetime.astimezone(pytz.UTC)
-        
+        # timezone is now an offset string like '+02:00'
+        dt_str = f"{birth_date} {birth_time}"
+        utc_datetime = to_utc(dt_str, timezone)
         return name, utc_datetime
     
     def create_charts(self, natal_data: Tuple[str, datetime.datetime, float, float], 
@@ -79,7 +84,8 @@ class AstrologicalAnalyzer:
             dt_utc=natal_dt,
             lat=natal_lat,
             lon=natal_lon,
-            orb_config=self.orb_config
+            orb_config=self.orb_config,
+            ephe_path=ephe_path
         )
         
         # Create transit chart if different from natal
@@ -94,7 +100,8 @@ class AstrologicalAnalyzer:
                     dt_utc=transit_dt,
                     lat=transit_lat,
                     lon=transit_lon,
-                    orb_config=self.orb_config
+                    orb_config=self.orb_config,
+                    ephe_path=ephe_path
                 )
         
         return natal_chart, transit_chart
@@ -419,16 +426,16 @@ class AstrologicalAnalyzer:
 
 def main():
     """Main function demonstrating the astrological analyzer."""
-    # Initialize analyzer
-    analyzer = AstrologicalAnalyzer()
-    
     # Example birth data (Joe Doe from references.py)
     name = "Joe Doe"
     birth_date = "1990-02-27"
     birth_time = "09:15"  # Local time
     latitude = 38.25  # Izmir, Turkey
     longitude = 27.09
-    timezone = "Europe/Istanbul"
+    timezone = "+02:00"
+    
+    # Initialize analyzer
+    analyzer = AstrologicalAnalyzer()
     
     # Parse birth data
     natal_name, natal_dt = analyzer.parse_birth_data(
@@ -438,9 +445,11 @@ def main():
     # Create natal data tuple
     natal_data = (natal_name, natal_dt, latitude, longitude)
     
-    # Optional: Create transit data for current time
-    current_dt = datetime.datetime.now(pytz.UTC)
-    transit_data = ("Current Transit", current_dt, latitude, longitude)
+    # Optional: Create transit data for current time (use same offset)
+    now_local = datetime.datetime.now()
+    now_str = now_local.strftime('%Y-%m-%d %H:%M')
+    transit_dt = to_utc(now_str, timezone)
+    transit_data = ("Current Transit", transit_dt, latitude, longitude)
     
     # Generate report
     print("Generating astrological report...")

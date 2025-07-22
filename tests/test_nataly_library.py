@@ -3,11 +3,34 @@ Basic tests for the nataly astrological library.
 """
 
 import datetime
-import pytz
-import pytest
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from nataly import NatalChart, create_orb_config, BodyFilter
 from nataly.constants import ASTROLOGICAL_BODY_GROUPS, ANGLES_SYMBOLS, SIGNS, ASPECT_DATA
+
+# === USER MUST SET THIS ===
+# Path to directory containing Swiss Ephemeris .se1 files (e.g. seas_18.se1, sepl_18.se1, ...)
+ephe_path = "./ephe"
+
+# Check ephemeris directory and files
+required_files = [
+    "seas_18.se1", "sepl_18.se1", "semo_18.se1", "seplm18.se1", "semom18.se1"
+]
+if not os.path.isdir(ephe_path):
+    raise RuntimeError(f"Ephemeris directory not found: {ephe_path}")
+missing = [f for f in required_files if not os.path.isfile(os.path.join(ephe_path, f))]
+if missing:
+    raise RuntimeError(f"Missing ephemeris files in {ephe_path}: {missing}\nPlease download from https://www.astro.com/ftp/swisseph/ephe/")
+
+
+def parse_datetime_with_offset(dt_str, offset_str):
+    dt = datetime.datetime.strptime(dt_str, '%Y-%m-%d %H:%M')
+    sign = 1 if offset_str[0] == '+' else -1
+    hours, minutes = map(int, offset_str[1:].split(':'))
+    offset = datetime.timedelta(hours=sign*hours, minutes=sign*minutes)
+    return dt - offset  # convert to UTC
 
 
 class TestNatalyLibrary:
@@ -65,7 +88,7 @@ class TestNatalyLibrary:
     def test_natal_chart_creation(self):
         """Test NatalChart creation with sample data."""
         # Use the reference data from tests/references.py
-        birth_dt = datetime.datetime(1990, 2, 27, 7, 15, tzinfo=pytz.UTC)
+        birth_dt = datetime.datetime(1990, 2, 27, 7, 15, tzinfo=datetime.timezone.utc)
         
         try:
             chart = NatalChart(
@@ -101,7 +124,7 @@ class TestNatalyLibrary:
     
     def test_chart_methods(self):
         """Test NatalChart methods."""
-        birth_dt = datetime.datetime(1990, 2, 27, 7, 15, tzinfo=pytz.UTC)
+        birth_dt = datetime.datetime(1990, 2, 27, 7, 15, tzinfo=datetime.timezone.utc)
         
         try:
             chart = NatalChart(
@@ -139,7 +162,7 @@ class TestNatalyLibrary:
     
     def test_filtering(self):
         """Test body filtering functionality."""
-        birth_dt = datetime.datetime(1990, 2, 27, 7, 15, tzinfo=pytz.UTC)
+        birth_dt = datetime.datetime(1990, 2, 27, 7, 15, tzinfo=datetime.timezone.utc)
         
         try:
             chart = NatalChart(

@@ -15,6 +15,7 @@ from .constants import (
 from .config import NatalyConfig, get_config, set_ephe_path, get_ephe_path, create_config, create_orb_config, set_default_orb_config
 from .layout import ChartLayout
 from .core import NatalyCore, example_function, process_data, create_core
+from .utils import to_utc
 
 __version__ = "0.1.4"
 __author__ = "Göker"
@@ -83,4 +84,5 @@ __all__ = [
     "example_function",
     "process_data",
     "create_core",
+    "to_utc",
 ] 

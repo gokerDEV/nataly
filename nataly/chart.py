@@ -19,6 +19,10 @@ class NatalChart:
     """
     
     def __init__(self, person_name: str, dt_utc: datetime.datetime, lat: float, lon: float, orb_config=None, ephe_path: str = './nataly/ephe'):
+        if ephe_path is None:
+            raise ValueError(
+                "ephe_path must be provided! Set ephe_path to the directory containing Swiss Ephemeris .se1 files (e.g. seas_18.se1, sepl_18.se1, ...)."
+            )
         """
         Creates a NatalChart object and performs all essential calculations.
         

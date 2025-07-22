@@ -161,6 +161,23 @@ def get_file_info(filepath: Union[str, Path]) -> Dict[str, Any]:
     }
 
 
+def to_utc(dt_str: str, offset_str: str):
+    """
+    Convert a local datetime string and offset string to UTC datetime.
+    Args:
+        dt_str: 'YYYY-MM-DD HH:MM'
+        offset_str: '+02:00' or '-02:30'
+    Returns:
+        datetime.datetime in UTC (naive)
+    """
+    import datetime
+    dt = datetime.datetime.strptime(dt_str, '%Y-%m-%d %H:%M')
+    sign = 1 if offset_str[0] == '+' else -1
+    hours, minutes = map(int, offset_str[1:].split(':'))
+    offset = datetime.timedelta(hours=sign*hours, minutes=sign*minutes)
+    return dt - offset  # naive UTC
+
+
 __all__ = [
     "setup_logging",
     "save_to_json",

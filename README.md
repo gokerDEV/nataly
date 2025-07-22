@@ -55,10 +55,9 @@ curl -L -o ephe/seplm18.se1 https://www.astro.com/ftp/swisseph/ephe/seplm18.se1
 ```python
 from nataly import NatalChart
 import datetime
-import pytz
 
 # Test chart with asteroids
-birth_dt = datetime.datetime(1990, 2, 27, 9, 15, tzinfo=pytz.UTC)
+birth_dt = datetime.datetime(1990, 2, 27, 9, 15, tzinfo=datetime.timezone.utc)
 chart = NatalChart(
     person_name="Test",
     dt_utc=birth_dt,
@@ -75,17 +74,22 @@ print(f"Found {len(asteroids)} asteroids: {[a.name for a in asteroids]}")
 
 ```python
 import datetime
-import pytz
-from nataly import NatalChart, create_orb_config
+from nataly import NatalChart, create_orb_config, to_utc
+
+# Path to ephemeris directory (must be set by user)
+ephe_path = "./ephe"  # <-- Set this to your .se1 files directory
+
+# Check required files (see below)
 
 # Create a natal chart
-birth_dt = datetime.datetime(1990, 2, 27, 7, 15, tzinfo=pytz.UTC)
+birth_dt = to_utc('1990-02-27 09:15', '+02:00')
 chart = NatalChart(
     person_name="Joe Doe",
     dt_utc=birth_dt,
     lat=38.25,  # Izmir, Turkey
     lon=27.09,
-    orb_config=create_orb_config('Placidus')
+    orb_config=create_orb_config('Placidus'),  # 'Placidus' is an alias for 'Default'
+    ephe_path=ephe_path
 )
 
 # Get planetary positions
@@ -129,7 +133,7 @@ retrograde = chart.get_retrograde_bodies()
 from nataly import AstroEngine
 
 # Create transit chart
-transit_dt = datetime.datetime.now(pytz.UTC)
+transit_dt = datetime.datetime.now(datetime.timezone.utc)
 transit_chart = NatalChart(
     person_name="Current Transit",
     dt_utc=transit_dt,
@@ -224,13 +228,35 @@ flake8 nataly/
 - `matplotlib>=3.3.0`: Chart visualization
 - `seaborn>=0.11.0`: Enhanced plotting
 
-## Ephemeris Files
+## Ephemeris Files (REQUIRED)
 
-For accurate calculations, download Swiss Ephemeris files:
+**You MUST provide the path to your ephemeris directory via ephe_path=... in all code.**
+
+Required files:
+- seas_18.se1
+- sepl_18.se1
+- semo_18.se1
+- seplm18.se1
+- semom18.se1
+
+Example check:
+```python
+import os
+required_files = ["seas_18.se1", "sepl_18.se1", "semo_18.se1", "seplm18.se1", "semom18.se1"]
+ephe_path = "./ephe"
+if not os.path.isdir(ephe_path):
+    raise RuntimeError(f"Ephemeris directory not found: {ephe_path}")
+missing = [f for f in required_files if not os.path.isfile(os.path.join(ephe_path, f))]
+if missing:
+    raise RuntimeError(f"Missing ephemeris files in {ephe_path}: {missing}")
+```
 
 1. Go to https://www.astro.com/swisseph/swedownload_j.htm
 2. Download ephemeris files (e.g., `seas_18.se1`)
-3. Place files in `./nataly/ephe/` directory
+3. Place files in `ephe/` directory
+
+## Orb Config
+- 'Placidus' is an alias for 'Default' in orb_config (for compatibility)
 
 ## License
 
@@ -251,10 +277,10 @@ Nataly now provides geometric layout data for visualizing natal charts via the `
 
 ```python
 from nataly import NatalChart, ChartLayout
-import datetime, pytz
+import datetime
 
 # Create a natal chart
-birth_dt = datetime.datetime(1990, 2, 27, 9, 15, tzinfo=pytz.UTC)
+birth_dt = datetime.datetime(1990, 2, 27, 9, 15, tzinfo=datetime.timezone.utc)
 chart = NatalChart(
     person_name="Joe Doe",
     dt_utc=birth_dt,
