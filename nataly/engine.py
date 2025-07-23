@@ -201,11 +201,11 @@ class AstroEngine:
             obl_rad = math.radians(obliquity)
             lon_rad = math.radians(cusp_lon)
             
-            # Calculate house cusp declination using the proper formula
-            # For Placidus houses, the declination is calculated as:
-            # declination = arcsin(sin(lat) * sin(obliquity) + cos(lat) * cos(obliquity) * cos(longitude))
-            sin_decl = math.sin(lat_rad) * math.sin(obl_rad) + math.cos(lat_rad) * math.cos(obl_rad) * math.cos(lon_rad)
-            cusp_declination = math.degrees(math.asin(sin_decl))
+            # Calculate house cusp declination using the correct formula
+            # House cusps are points on the ecliptic (latitude = 0)
+            # For ecliptic points, declination = obliquity * sin(longitude)
+            # This is the correct formula for house cusp declination
+            cusp_declination = obliquity * math.sin(math.radians(cusp_lon))
             
             houses_list.append(House(
                 id=i + 1, cusp_longitude=cusp_lon, sign=sign,

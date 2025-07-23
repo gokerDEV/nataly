@@ -8,7 +8,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="nataly",
-    version="0.1.5",
+    version="0.1.6",
     author="Göker",
     author_email="goker@goker.dev",
     description="A comprehensive astrology library for natal chart calculations, analysis, geometric chart layout extraction, and accurate declination calculations.",

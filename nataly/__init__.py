@@ -17,7 +17,7 @@ from .layout import ChartLayout
 from .core import NatalyCore, example_function, process_data, create_core
 from .utils import to_utc
 
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 __author__ = "Göker"
 __email__ = "goker@goker.dev"
 __description__ = "A comprehensive astrology library for natal chart calculations, analysis, geometric chart layout extraction, and accurate declination calculations."
