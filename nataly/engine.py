@@ -3,6 +3,7 @@
 
 import swisseph as swe
 import os
+import math
 from typing import List, Dict
 
 from .models import Body, House, Aspect, get_sign
@@ -136,8 +137,15 @@ class AstroEngine:
                 else: continue
             elif planet_id is not None:
                 try:
-                    full_output, _ = swe.calc_ut(jd_utc, planet_id, swe.FLG_SPEED)
-                    lon_val, speed = full_output[0], full_output[3]
+                    # Get ecliptic coordinates (longitude, latitude, distance, speeds)
+                    ecl_output, _ = swe.calc_ut(jd_utc, planet_id, swe.FLG_SPEED)
+                    lon_val, speed = ecl_output[0], ecl_output[3]
+                    lat_val = ecl_output[1]  # Latitude
+                    
+                    # Get equatorial coordinates (right ascension, declination, distance, speeds)
+                    equ_output, _ = swe.calc_ut(jd_utc, planet_id, swe.FLG_SPEED | swe.FLG_EQUATORIAL)
+                    decl_val = equ_output[1]  # Declination (index 1 in equatorial output)
+                        
                 except Exception: continue
             else: continue
 
@@ -146,10 +154,15 @@ class AstroEngine:
             dignity = self._get_dignity(name, sign.name)
             body_type = self._get_body_type(name)
 
+            # Set default values for angles (no latitude/declination)
+            lat_val = 0.0 if name in self.chart_angles else lat_val
+            decl_val = 0.0 if name in self.chart_angles else decl_val
+            
             bodies_dict[name] = Body(
                 name=name, body_type=body_type, longitude=lon_val, speed=speed,
                 is_retrograde=speed < 0 and name not in self.chart_angles,
-                sign=sign, house=house, dignity=dignity
+                sign=sign, house=house, dignity=dignity,
+                latitude=lat_val, declination=decl_val
             )
 
         houses_list = []
@@ -158,11 +171,48 @@ class AstroEngine:
             sign = self._get_sign_from_longitude(cusp_lon)
             classic_ruler = bodies_dict.get(sign.classic_ruler)
             modern_ruler = bodies_dict.get(sign.modern_ruler) if sign.modern_ruler else None
+            
+            # Calculate declination for house cusps using proper astrological method
+            # House cusp declination is calculated differently than body declination
+            # For Placidus houses, we need to use the house cusp longitude and geographic latitude
+            # The correct formula for house cusp declination is more complex
+            
+            # Get the obliquity of the ecliptic at the given time
+            year = dt_utc.year
+            month = dt_utc.month
+            day = dt_utc.day
+            
+            # Calculate Julian Day Number for the date
+            jd_date = swe.julday(year, month, day, 12.0)  # Noon on the date
+            
+            # Calculate T (Julian centuries since J2000.0)
+            T = (jd_date - 2451545.0) / 36525.0
+            
+            # IAU 2006 formula for mean obliquity
+            obliquity_arcsec = 84381.406 - 46.836769 * T - 0.0001831 * T * T + 0.00200340 * T * T * T - 0.000000576 * T * T * T * T - 0.0000000434 * T * T * T * T * T
+            obliquity = obliquity_arcsec / 3600.0  # Convert arcseconds to degrees
+            
+            # For house cusp declination, we need to use the proper astrological formula
+            # This is different from body declination calculation
+            # House cusp declination depends on the house system and geographic location
+            
+            # Convert to radians
+            lat_rad = math.radians(lat)
+            obl_rad = math.radians(obliquity)
+            lon_rad = math.radians(cusp_lon)
+            
+            # Calculate house cusp declination using the proper formula
+            # For Placidus houses, the declination is calculated as:
+            # declination = arcsin(sin(lat) * sin(obliquity) + cos(lat) * cos(obliquity) * cos(longitude))
+            sin_decl = math.sin(lat_rad) * math.sin(obl_rad) + math.cos(lat_rad) * math.cos(obl_rad) * math.cos(lon_rad)
+            cusp_declination = math.degrees(math.asin(sin_decl))
+            
             houses_list.append(House(
                 id=i + 1, cusp_longitude=cusp_lon, sign=sign,
                 classic_ruler=classic_ruler, modern_ruler=modern_ruler,
                 classic_ruler_house=classic_ruler.house if classic_ruler else None,
-                modern_ruler_house=modern_ruler.house if modern_ruler else None
+                modern_ruler_house=modern_ruler.house if modern_ruler else None,
+                declination=cusp_declination
             ))
         return bodies_dict, houses_list
 

@@ -121,6 +121,8 @@ class Body:
     sign: Sign
     house: int
     dignity: str = ""
+    latitude: float = 0.0
+    declination: float = 0.0
 
     @property
     def dms(self) -> str:
@@ -138,6 +140,26 @@ class Body:
         minutes = int(minutes_decimal)
         seconds = int((minutes_decimal - minutes) * 60)
         return f"{degrees}{self.sign.symbol}{minutes:02d}'{seconds:02d}\""
+
+    @property
+    def absolute_longitude(self) -> float:
+        """Returns the absolute longitude (0-360 degrees)."""
+        return self.longitude
+
+    @property
+    def absolute_dms(self) -> str:
+        """Returns the absolute longitude in DMS format (0-360 degrees)."""
+        return decimal_to_dms_string(self.longitude, 'speed')
+
+    @property
+    def latitude_dms(self) -> str:
+        """Returns the latitude in DMS format."""
+        return decimal_to_dms_string(self.latitude, 'speed')
+
+    @property
+    def declination_dms(self) -> str:
+        """Returns the declination in DMS format."""
+        return decimal_to_dms_string(self.declination, 'speed')
 
 @dataclass
 class BodyFilter:
@@ -194,11 +216,27 @@ class House:
     modern_ruler: Optional[Body] = None
     classic_ruler_house: Optional[int] = None
     modern_ruler_house: Optional[int] = None
+    declination: float = 0.0
 
     @property
     def dms(self) -> str:
         """Returns the cusp longitude in Degrees°Minutes'Seconds" format within its sign."""
         return decimal_to_dms_string(self.cusp_longitude, 'position')
+
+    @property
+    def absolute_longitude(self) -> float:
+        """Returns the absolute longitude (0-360 degrees)."""
+        return self.cusp_longitude
+
+    @property
+    def absolute_dms(self) -> str:
+        """Returns the absolute longitude in DMS format (0-360 degrees)."""
+        return decimal_to_dms_string(self.cusp_longitude, 'speed')
+
+    @property
+    def declination_dms(self) -> str:
+        """Returns the declination in DMS format."""
+        return decimal_to_dms_string(self.declination, 'speed')
 
 @dataclass
 class Aspect:

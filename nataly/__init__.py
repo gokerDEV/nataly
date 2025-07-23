@@ -17,10 +17,10 @@ from .layout import ChartLayout
 from .core import NatalyCore, example_function, process_data, create_core
 from .utils import to_utc
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __author__ = "Göker"
 __email__ = "goker@goker.dev"
-__description__ = "A comprehensive astrology library for natal chart calculations, analysis, and geometric chart layout extraction."
+__description__ = "A comprehensive astrology library for natal chart calculations, analysis, geometric chart layout extraction, and accurate declination calculations."
 
 # Automatically set ephemeris path to package directory
 _package_dir = os.path.dirname(__file__)

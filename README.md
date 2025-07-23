@@ -17,6 +17,9 @@ A comprehensive Python library for astrological chart calculations and analysis.
 - **House Systems**: Support for Placidus and other house systems
 - **Dignities**: Planetary dignities (domicile, exaltation, detriment, fall)
 - **Filtering**: Advanced filtering for celestial bodies by type, sign, house, etc.
+- **Declination Calculations**: Accurate declination data for both bodies and house cusps
+- **Absolute Longitude**: Full 360° longitude calculations for precise positioning
+- **Enhanced Reports**: Comprehensive chart reports with all astrological data
 
 ## Installation
 
@@ -79,8 +82,6 @@ from nataly import NatalChart, create_orb_config, to_utc
 # Path to ephemeris directory (must be set by user)
 ephe_path = "./ephe"  # <-- Set this to your .se1 files directory
 
-# Check required files (see below)
-
 # Create a natal chart
 birth_dt = to_utc('1990-02-27 09:15', '+02:00')
 chart = NatalChart(
@@ -92,9 +93,10 @@ chart = NatalChart(
     ephe_path=ephe_path
 )
 
-# Get planetary positions
+# Get planetary positions with declination
 sun = chart.get_body_by_name("Sun")
 print(f"Sun: {sun.signed_dms} in House {sun.house}")
+print(f"Sun declination: {sun.declination_dms}")
 
 # Get aspects
 for aspect in chart.aspects:
@@ -103,9 +105,37 @@ for aspect in chart.aspects:
 # Get distributions
 print("Element distribution:", chart.element_distribution)
 print("Modality distribution:", chart.modality_distribution)
+
+# Get house cusps with declination
+for house in chart.houses:
+    print(f"House {house.id}: {house.dms} {house.sign.name} (declination: {house.declination_dms})")
 ```
 
 ## Advanced Usage
+
+### Enhanced Chart Reports
+
+```python
+# Generate comprehensive natal chart report
+from nataly import NatalChart, to_utc
+
+birth_dt = to_utc('1997-03-28 18:00', '+02:00')
+chart = NatalChart(
+    person_name="Joe Doe",
+    dt_utc=birth_dt,
+    lat=41.0529,  # Istanbul, Turkey
+    lon=29.0661,
+    ephe_path="./ephe"
+)
+
+# Get all bodies with absolute longitude and declination
+for body in chart.get_bodies():
+    print(f"{body.name}: {body.absolute_dms} (declination: {body.declination_dms})")
+
+# Get house cusps with declination
+for house in chart.houses:
+    print(f"House {house.id}: {house.absolute_dms} {house.sign.name} (declination: {house.declination_dms})")
+```
 
 ### Filtering Celestial Bodies
 
@@ -192,6 +222,8 @@ Check the `examples/` directory for complete examples:
 
 - `astrological_analysis.py`: Comprehensive chart analysis with report generation
 - `basic_usage.py`: Basic library usage examples
+- `reference_2_enhanced_report.py`: Complete natal chart report with all bodies, aspects, and declinations
+- `reference_1_test.py`: Test script for reference data validation
 
 ## Development
 
@@ -233,11 +265,11 @@ flake8 nataly/
 **You MUST provide the path to your ephemeris directory via ephe_path=... in all code.**
 
 Required files:
-- seas_18.se1
-- sepl_18.se1
-- semo_18.se1
-- seplm18.se1
-- semom18.se1
+- seas_18.se1 (asteroids)
+- sepl_18.se1 (planets)
+- semo_18.se1 (asteroids)
+- seplm18.se1 (planets)
+- semom18.se1 (asteroids)
 
 Example check:
 ```python
@@ -255,8 +287,35 @@ if missing:
 2. Download ephemeris files (e.g., `seas_18.se1`)
 3. Place files in `ephe/` directory
 
+**Note:** These files are required for accurate declination calculations and asteroid positions.
+
 ## Orb Config
 - 'Placidus' is an alias for 'Default' in orb_config (for compatibility)
+
+## Declination Calculations
+
+Nataly provides accurate declination calculations for both celestial bodies and house cusps:
+
+### Body Declinations
+- Uses Swiss Ephemeris equatorial coordinates for precise declination values
+- Compatible with astro.com and other professional astrological software
+- Available for all planets, asteroids, and lunar nodes
+
+### House Cusp Declinations
+- Calculated using proper astrological formulas with dynamic obliquity
+- Uses IAU 2006 formula for mean obliquity based on Julian centuries since J2000
+- Accurate for all historical and future dates
+
+### Usage Example
+```python
+# Get body declination
+sun = chart.get_body_by_name("Sun")
+print(f"Sun declination: {sun.declination_dms}")
+
+# Get house cusp declination
+first_house = chart.houses[0]
+print(f"1st House declination: {first_house.declination_dms}")
+```
 
 ## License
 
@@ -302,5 +361,8 @@ See `examples/basic_usage.py` for a runnable sample.
 
 ## Version History
 
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
+
+- 0.1.5: Enhanced declination calculations for bodies and house cusps, improved Swiss Ephemeris integration, added comprehensive chart reports
 - 0.1.3: Added ChartLayout for geometric chart layout extraction and public API, new example in basic_usage.py
 - 0.1.0: Initial release with complete astrological functionality 

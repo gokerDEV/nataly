@@ -8,17 +8,20 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="nataly",
-    version="0.1.4",
+    version="0.1.5",
     author="Göker",
     author_email="goker@goker.dev",
-    description="A comprehensive astrology library for natal chart calculations, analysis, and geometric chart layout extraction.",
+    description="A comprehensive astrology library for natal chart calculations, analysis, geometric chart layout extraction, and accurate declination calculations.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/gokerDEV/nataly",
     packages=find_packages(),
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "Topic :: Scientific/Engineering :: Astronomy",
+        "Topic :: Scientific/Engineering :: Mathematics",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
