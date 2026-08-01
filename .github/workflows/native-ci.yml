@@ -1,0 +1,73 @@
+name: Native CI
+
+on:
+  push:
+    branches: [native]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout with Swiss Ephemeris sources
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Verify dependency removal
+        run: |
+          python -c "import importlib.metadata as m; print(m.requires('nataly') or [])"
+          python -m pip check
+
+      - name: Run native parity tests
+        run: python -m pytest tests/test_native_extension.py
+
+      - name: Build distributions
+        run: python -m build
+
+  wheel-smoke:
+    name: cibuildwheel smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with Swiss Ephemeris sources
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Build Linux wheels
+        uses: pypa/cibuildwheel@v3.4.1
+        with:
+          output-dir: wheelhouse
+        env:
+          CIBW_BUILD: "cp39-manylinux_x86_64 cp310-manylinux_x86_64 cp311-manylinux_x86_64 cp312-manylinux_x86_64 cp313-manylinux_x86_64"
+          CIBW_TEST_COMMAND: "python -m pytest {project}/tests/test_native_extension.py"
+          CIBW_TEST_REQUIRES: "pytest>=8"
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: native-linux-wheels
+          path: wheelhouse/*.whl
