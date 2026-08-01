@@ -1,45 +1,59 @@
-from setuptools import setup, find_packages
+"""Build the minimal Swiss Ephemeris extension bundled with Nataly."""
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+from pathlib import Path
+import sys
 
-with open("requirements.txt", "r", encoding="utf-8") as fh:
-    requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+from setuptools import Extension, setup
+
+ROOT = Path(__file__).parent.resolve()
+SWISSEPH_ROOT = ROOT / "vendor" / "swisseph" / "libswe"
+
+SWISSEPH_SOURCES = [
+    "swecl.c",
+    "swedate.c",
+    "swehel.c",
+    "swehouse.c",
+    "swejpl.c",
+    "swemmoon.c",
+    "swemplan.c",
+    "sweph.c",
+    "swephlib.c",
+]
+
+missing_sources = [
+    source for source in SWISSEPH_SOURCES
+    if not (SWISSEPH_ROOT / source).is_file()
+]
+if missing_sources:
+    missing = ", ".join(missing_sources)
+    raise RuntimeError(
+        "Swiss Ephemeris sources are missing: "
+        f"{missing}. Run `git submodule update --init --recursive` before "
+        "building Nataly."
+    )
+
+extra_compile_args = []
+define_macros = []
+if sys.platform == "win32":
+    define_macros.append(("_CRT_SECURE_NO_WARNINGS", "1"))
+elif sys.platform == "darwin":
+    extra_compile_args.append(
+        "-Wno-error=unused-command-line-argument-hard-error-in-future"
+    )
+
+native_extension = Extension(
+    "nataly._swisseph",
+    sources=[
+        str(ROOT / "native" / "_swisseph.c"),
+        *[str(SWISSEPH_ROOT / source) for source in SWISSEPH_SOURCES],
+    ],
+    include_dirs=[str(SWISSEPH_ROOT)],
+    define_macros=define_macros,
+    extra_compile_args=extra_compile_args,
+)
 
 setup(
-    name="nataly",
-    version="0.1.6",
-    author="Göker",
-    author_email="goker@goker.dev",
-    description="A comprehensive astrology library for natal chart calculations, analysis, geometric chart layout extraction, and accurate declination calculations.",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/gokerDEV/nataly",
-    packages=find_packages(),
-    classifiers=[
-        "Development Status :: 4 - Beta",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Science/Research",
-        "Topic :: Scientific/Engineering :: Astronomy",
-        "Topic :: Scientific/Engineering :: Mathematics",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-    ],
-    python_requires=">=3.7",
-    install_requires=requirements,
-    extras_require={
-        "dev": [
-            "pytest>=6.0",
-            "pytest-cov>=2.0",
-            "black>=21.0",
-            "flake8>=3.8",
-            "mypy>=0.800",
-        ],
-    },
-) 
+    ext_modules=[native_extension],
+    include_package_data=True,
+    package_data={"nataly": ["ephe/*.se1"]},
+)

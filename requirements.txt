@@ -1,1 +1,2 @@
-pyswisseph>=2.10.3.2
+# Nataly has no runtime Python dependencies.
+# Swiss Ephemeris is compiled into nataly._swisseph from vendored C sources.

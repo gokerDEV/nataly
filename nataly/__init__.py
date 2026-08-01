@@ -2,15 +2,30 @@
 # Main package initialization for the nataly astrology library.
 
 import os
-from .chart import NatalChart
-from .engine import AstroEngine
-from .models import Body, House, Aspect, Sign, BodyFilter, OrbConfig
-from .constants import (
-    SIGNS, BODY_SYMBOLS, ALL_BODY_NAMES,
-    ASPECT_DATA, DIGNITY_RULES,
-    MODALITIES, ELEMENTS, POLARITIES,
-    BODY_TYPE_MAPPINGS, VALID_BODY_TYPES, BODY_TYPES
-)
+import sys
+
+from . import _swisseph
+
+# Existing internal modules import ``swisseph`` directly. Bootstrap them with
+# Nataly's private extension, then restore any external module that was already
+# present so importing Nataly does not replace another package globally.
+_previous_swisseph = sys.modules.get("swisseph")
+sys.modules["swisseph"] = _swisseph
+try:
+    from .chart import NatalChart
+    from .engine import AstroEngine
+    from .models import Body, House, Aspect, Sign, BodyFilter, OrbConfig
+    from .constants import (
+        SIGNS, BODY_SYMBOLS, ALL_BODY_NAMES,
+        ASPECT_DATA, DIGNITY_RULES,
+        MODALITIES, ELEMENTS, POLARITIES,
+        BODY_TYPE_MAPPINGS, VALID_BODY_TYPES, BODY_TYPES
+    )
+finally:
+    if _previous_swisseph is None:
+        del sys.modules["swisseph"]
+    else:
+        sys.modules["swisseph"] = _previous_swisseph
 
 from .config import NatalyConfig, get_config, set_ephe_path, get_ephe_path, create_config, create_orb_config, set_default_orb_config
 from .layout import ChartLayout
@@ -32,28 +47,28 @@ if os.path.exists(_ephe_path):
 __all__ = [
     # Core classes
     "NatalChart",
-    "AstroEngine", 
+    "AstroEngine",
     "Body",
     "House",
     "Aspect",
     "Sign",
     "BodyFilter",
     "OrbConfig",
-    
+
     # Configuration functions
     "create_orb_config",
     "set_default_orb_config",
-    
+
     # Configuration management
     "NatalyConfig",
     "get_config",
     "set_ephe_path",
     "get_ephe_path",
     "create_config",
-    
+
     # Constants and data
     "SIGNS",
-    "BODY_SYMBOLS", 
+    "BODY_SYMBOLS",
     "PLANET_SYMBOLS",
     "PLANET_NAMES",
     "AXES_NAMES",
@@ -61,12 +76,12 @@ __all__ = [
     "MAJOR_ASPECTS",
     "DIGNITY_RULES",
     "MODALITIES",
-    "ELEMENTS", 
+    "ELEMENTS",
     "POLARITIES",
-    
+
     # Categorized body lists
     "LUMINARIES",
-    "MAJOR_PLANETS", 
+    "MAJOR_PLANETS",
     "ASTEROIDS",
     "LUNAR_NODES",
     "LILITH_BODIES",
@@ -74,7 +89,7 @@ __all__ = [
     "PLANETS",
     "ALL_BODIES",
     "ALL_BODY_NAMES",
-    
+
     # Type definitions
     "BODY_TYPES",
     "BODY_TYPE_MAPPINGS",
@@ -85,4 +100,4 @@ __all__ = [
     "process_data",
     "create_core",
     "to_utc",
-] 
+]

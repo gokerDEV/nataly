@@ -1,0 +1,4 @@
+[submodule "vendor/swisseph"]
+	path = vendor/swisseph
+	url = https://github.com/sailorfe/pysweph.git
+	branch = pysweph

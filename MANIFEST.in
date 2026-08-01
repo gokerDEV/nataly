@@ -1,8 +1,12 @@
 include README.md
 include LICENSE
+include NOTICE.md
 include requirements.txt
 include pyproject.toml
+include setup.py
+include native/_swisseph.c
 recursive-include nataly *.py
 recursive-include nataly/ephe *.se1
+recursive-include vendor/swisseph/libswe *.c *.h
 recursive-exclude * __pycache__
-recursive-exclude * *.py[co] 
+recursive-exclude * *.py[co]
